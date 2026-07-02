@@ -70,7 +70,7 @@ const experience = [
     period: "Jan 2026 – Present",
     roles: [
       {
-        title: "Senior AI Engineer — LLM & Applied ML",
+        title: "Senior AI Engineer (LLM & Applied ML)",
         period: "Jan 2026 – Present",
         summary:
           "Building LLM safety pipelines on Anthropic's Claude API and modernising desktop infrastructure for AI feature deployment.",
@@ -87,7 +87,7 @@ const experience = [
     period: "Nov 2025 – Present",
     roles: [
       {
-        title: "Software Engineer — AI & Backend",
+        title: "Software Engineer (AI & Backend)",
         period: "Nov 2025 – Present",
         summary:
           "DeFi wallet infrastructure across Ethereum & Solana (5,000+ users), plus AI features for an NHS healthcare-staffing platform.",
@@ -113,7 +113,7 @@ const experience = [
         title: "AI Researcher & Engineer",
         period: "Jun 2024 – Feb 2025",
         summary:
-          "Built Apprentago's entire backend and API layer — 22,000+ users, 10,000+ job listings — with RAG-powered AI assistants shipped on AWS & GCP.",
+          "Built Apprentago's entire backend and API layer (22,000+ users, 10,000+ job listings) with RAG-powered AI assistants shipped on AWS & GCP.",
       },
     ],
     tags: ["Llama 3", "AWS Bedrock", "RAG", "Django"],
@@ -169,20 +169,41 @@ type WorkItem = {
   role: string
   employer: string
   employerLogo: string
+  caseStudyUrl?: string // if the client is public (e.g. an employer case study), link it
 }
 
 const BRDGE_LOGO = "/brdge-logo.png"
 const AXIOMFUSE_LOGO = "/axiomfuse-logo.png"
-const SUPERNOMICS_LOGO = "/supernomics-logo.svg"
+const SUPERNOMICS_LOGO = "/supernomics-mark.png" // square ring mark (the wordmark looks off at footer size)
 
 const work: WorkItem[] = [
   {
+    clientLogo: "/shyft-logo.png",
+    icon: Stethoscope,
+    title: "Shyft",
+    desc: "Contributed to the backend and AI features of a cross-platform NHS healthcare-staffing ecosystem: intelligent job-matching, a real-time staffing insights dashboard and scheduling, connecting 1,492+ professionals to 4,990+ jobs.",
+    role: "Backend & AI",
+    employer: "Axiomfuse",
+    employerLogo: AXIOMFUSE_LOGO,
+    caseStudyUrl: "https://axiomfuse.com/case-studies/shyft-healthcare",
+  },
+  {
     clientLogo: "/apprentago-logo.png",
     title: "Apprentago",
-    desc: "AI-powered apprenticeship platform — I built the complete backend and API layer for 22,000+ users and 10,000+ job listings.",
+    desc: "AI-powered apprenticeship platform. I built the complete backend and API layer for 22,000+ users and 10,000+ job listings.",
     role: "Backend & API · 2024–25",
     employer: "BRDGE",
     employerLogo: BRDGE_LOGO,
+  },
+  {
+    clientLogo: "/xcare-logo.svg",
+    icon: Wallet,
+    title: "XCARE Capital",
+    desc: "Core member of the two-person backend & blockchain team. Built the self-custodial wallet infrastructure from inception, integrating Aave, Morpho, Kamino & Jito with real-time position tracking across Ethereum & Solana, plus in-app calls and messaging.",
+    role: "Backend Engineer",
+    employer: "Axiomfuse",
+    employerLogo: AXIOMFUSE_LOGO,
+    caseStudyUrl: "https://axiomfuse.com/case-studies/xcare-capital",
   },
   {
     icon: Scale,
@@ -191,22 +212,6 @@ const work: WorkItem[] = [
     role: "LLM Engineer",
     employer: "BRDGE",
     employerLogo: BRDGE_LOGO,
-  },
-  {
-    icon: Wallet,
-    title: "DeFi Wallet Infrastructure",
-    desc: "Aave, Morpho, Kamino & Jito integrations with real-time position tracking across Ethereum & Solana for 5,000+ users.",
-    role: "Backend Engineer",
-    employer: "Axiomfuse",
-    employerLogo: AXIOMFUSE_LOGO,
-  },
-  {
-    icon: Stethoscope,
-    title: "NHS Staffing Platform",
-    desc: "AI job-matching, a real-time staffing insights dashboard and scheduling for NHS Trusts — 4,900+ filled jobs.",
-    role: "AI & Backend",
-    employer: "Axiomfuse",
-    employerLogo: AXIOMFUSE_LOGO,
   },
   {
     icon: ShieldCheck,
@@ -230,7 +235,7 @@ const highlights: { logo?: string; icon: LucideIcon; title: string; label: strin
   {
     logo: "/gdg-logo.png",
     icon: Mic,
-    title: "Google DevFest — From Lagos to the World: Building Scalable AI Systems That Deliver Impact.",
+    title: "Google DevFest · From Lagos to the World: Building Scalable AI Systems That Deliver Impact.",
     label: "Talk · 3K+ attendees",
     href: "https://www.linkedin.com/feed/update/urn:li:activity:7406264295312945153/",
   },
@@ -244,14 +249,14 @@ const highlights: { logo?: string; icon: LucideIcon; title: string; label: strin
   {
     logo: "/nyp-logo.jpg",
     icon: Mic,
-    title: "Nigeria Youth Parliament — AI & the Future of Work",
+    title: "Nigeria Youth Parliament: AI & the Future of Work",
     label: "Talk · 150+ attendees",
     href: "https://www.linkedin.com/feed/update/urn:li:activity:7425463424467464193/",
   },
   {
     logo: "/nacos-logo.jpg",
     icon: Award,
-    title: "Nigeria Association of Computing Students, Bowen University — President",
+    title: "Nigeria Association of Computing Students, Bowen University · President",
     label: "Leadership · 800+ members",
     href: "https://www.linkedin.com/feed/update/urn:li:activity:7231974579848531968/",
   },
@@ -412,7 +417,7 @@ export default function HomePage() {
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-slate-400">
                 Senior AI &amp; Backend Engineer building production LLM systems and scalable infrastructure for clients
-                across the US, Europe, Asia, the Gulf and Africa — RAG pipelines, agentic workflows and cloud, shipped
+                across the US, Europe, Asia, the Gulf and Africa: RAG pipelines, agentic workflows and cloud, shipped
                 with reliability, security and scale.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -624,7 +629,7 @@ export default function HomePage() {
                 Research rigour. <span className="text-primary">Production reality.</span>
               </h2>
               <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-400">
-                I started in AI research — building a Nigerian Sign Language recognition system and NLP models where
+                I started in AI research, building a Nigerian Sign Language recognition system and NLP models where
                 correctness and evaluation are everything. Then I moved into shipping backends and LLM systems for real
                 users, where scale, latency and reliability decide whether the work actually matters.
               </p>
@@ -637,7 +642,7 @@ export default function HomePage() {
                 </p>
                 <h3 className="mb-2 text-xl font-bold">How to do things right.</h3>
                 <p className="text-sm leading-relaxed text-slate-400">
-                  Evaluation, correctness and reproducibility — the discipline to build models and systems that hold up
+                  Evaluation, correctness and reproducibility: the discipline to build models and systems that hold up
                   when real people depend on them.
                 </p>
               </div>
@@ -647,7 +652,7 @@ export default function HomePage() {
                 </p>
                 <h3 className="mb-2 text-xl font-bold">What actually ships.</h3>
                 <p className="text-sm leading-relaxed text-slate-400">
-                  APIs, scale, latency and cost under load — turning a working prototype into a service that stays up and
+                  APIs, scale, latency and cost under load: turning a working prototype into a service that stays up and
                   performs for thousands of users.
                 </p>
               </div>
@@ -655,7 +660,7 @@ export default function HomePage() {
 
             <FadeIn>
               <p className="mt-12 border-t border-white/10 pt-10 text-2xl font-medium leading-snug md:text-3xl">
-                The best AI work sits where research rigour meets production reality —{" "}
+                The best AI work sits where research rigour meets production reality:{" "}
                 <span className="text-primary">that's where I build.</span>
               </p>
             </FadeIn>
@@ -701,54 +706,78 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 7. SELECTED WORK (dark) */}
-        <section className="bg-slate-900 py-24 px-6 text-white">
+        {/* 7. SELECTED WORK (light) */}
+        <section className="bg-slate-50 py-24 px-6">
           <div className="mx-auto max-w-7xl">
             <FadeIn>
-              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-accent-teal">Selected Work</p>
-              <h2 className="mb-14 font-display text-4xl font-bold md:text-5xl">Where I put the work in.</h2>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Selected Work</p>
+              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">
+                Where I put the work in.
+              </h2>
             </FadeIn>
 
             <StaggerIn staggerDelay={0.1} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {work.map((p) => (
-                <div
-                  key={p.title}
-                  className="flex flex-col rounded-3xl border border-white/10 bg-slate-800/50 p-6 transition-colors hover:border-primary/40"
-                >
-                  {/* client / product */}
-                  <div className="mb-5 flex h-14 items-center gap-3">
-                    {p.clientLogo ? (
-                      <span className="inline-flex h-14 items-center rounded-xl bg-white px-4">
-                        <img src={p.clientLogo} alt={p.title} className="max-h-7 w-auto max-w-[150px] object-contain" />
-                      </span>
-                    ) : (
-                      <>
-                        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15">
-                          {p.icon && <p.icon className="h-6 w-6 text-primary" />}
-                        </span>
-                        <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-                          Confidential
-                        </span>
-                      </>
+              {work.slice(0, 3).map((p) => {
+                const cardClass =
+                  "group relative flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                const body = (
+                  <>
+                    {p.caseStudyUrl && (
+                      <ArrowUpRight className="absolute right-6 top-6 h-4 w-4 text-slate-300 transition-colors group-hover:text-primary" />
                     )}
+                    {/* client / product */}
+                    <div className="mb-5 flex h-12 items-center gap-3">
+                      {p.clientLogo ? (
+                        <img
+                          src={p.clientLogo}
+                          alt={p.title}
+                          className="max-h-9 w-auto max-w-[160px] object-contain object-left"
+                        />
+                      ) : (
+                        <>
+                          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                            {p.icon && <p.icon className="h-6 w-6 text-primary" />}
+                          </span>
+                          <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                            Confidential
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900">{p.title}</h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{p.desc}</p>
+                    <p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{p.role}</p>
+                    {/* employer credit */}
+                    <div className="mt-4 flex items-center gap-2 border-t border-slate-200 pt-4">
+                      <span className="text-xs text-slate-500">
+                        Built at <span className="font-semibold text-slate-900">{p.employer}</span>
+                      </span>
+                      <img src={p.employerLogo} alt={p.employer} className="h-5 w-auto max-w-[72px] object-contain" />
+                    </div>
+                  </>
+                )
+                return p.caseStudyUrl ? (
+                  <a key={p.title} href={p.caseStudyUrl} target="_blank" rel="noopener noreferrer" className={cardClass}>
+                    {body}
+                  </a>
+                ) : (
+                  <div key={p.title} className={cardClass}>
+                    {body}
                   </div>
-                  <h3 className="text-lg font-bold">{p.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">{p.desc}</p>
-                  <p className="mt-5 text-xs font-bold uppercase tracking-widest text-accent-teal">{p.role}</p>
-                  {/* employer credit */}
-                  <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4">
-                    <img
-                      src={p.employerLogo}
-                      alt={p.employer}
-                      className="h-5 w-auto max-w-[72px] object-contain"
-                    />
-                    <span className="text-xs text-slate-400">
-                      Built at <span className="font-semibold text-slate-200">{p.employer}</span>
-                    </span>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </StaggerIn>
+
+            <FadeIn>
+              <div className="mt-12 flex justify-center">
+                <Link
+                  href="/portfolio"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                >
+                  See more of my work <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </FadeIn>
           </div>
         </section>
 
@@ -759,7 +788,7 @@ export default function HomePage() {
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Speaking &amp; Community</p>
               <h2 className="mb-4 font-display text-4xl font-bold text-slate-900 md:text-5xl">Ideas worth sharing.</h2>
               <p className="mb-12 max-w-2xl text-lg text-slate-600">
-                From keynote stages to student leadership — sharing what I learn building AI, and helping others get
+                From keynote stages to student leadership, sharing what I learn building AI, and helping others get
                 there faster.
               </p>
             </FadeIn>
@@ -812,7 +841,7 @@ export default function HomePage() {
                 Let's build something <span className="text-primary">ambitious.</span>
               </h2>
               <p className="mx-auto mt-6 max-w-xl text-lg text-slate-400">
-                Whether it's an AI system, a backend platform or a research collaboration — let's start a conversation.
+                Whether it's an AI system, a backend platform or a research collaboration, let's start a conversation.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <button
