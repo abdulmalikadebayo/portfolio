@@ -7,6 +7,8 @@ export interface CarouselImage {
   src: string
   alt: string
   caption?: string
+  /** "cover" (default) fills the frame; "contain" shows the whole image on a blurred fill (for tall portraits). */
+  fit?: "cover" | "contain"
 }
 
 interface ImageCarouselProps {
@@ -37,24 +39,32 @@ export function ImageCarousel({ images, interval = 4000, className = "" }: Image
         className="flex h-full transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
-        {images.map((image, index) => (
-          <div key={index} className="relative h-96 w-full flex-shrink-0 overflow-hidden bg-slate-900 md:h-[520px]">
-            {/* blurred fill so any aspect ratio looks intentional (no cropping of faces) */}
-            <img
-              src={image.src}
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
-            />
-            {/* full image, never cropped */}
-            <img src={image.src} alt={image.alt} className="relative h-full w-full object-contain" />
-            {image.caption && (
-              <span className="absolute bottom-4 left-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                {image.caption}
-              </span>
-            )}
-          </div>
-        ))}
+        {images.map((image, index) => {
+          const contain = image.fit === "contain"
+          return (
+            <div key={index} className="relative h-96 w-full flex-shrink-0 overflow-hidden bg-muted md:h-[640px]">
+              {contain && (
+                // blurred fill so tall portraits look intentional instead of leaving bars
+                <img
+                  src={image.src}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
+                />
+              )}
+              <img
+                src={image.src}
+                alt={image.alt}
+                className={`relative h-full w-full ${contain ? "object-contain" : "object-cover"}`}
+              />
+              {image.caption && (
+                <span className="absolute bottom-4 left-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  {image.caption}
+                </span>
+              )}
+            </div>
+          )
+        })}
       </div>
 
       {images.length > 1 && (

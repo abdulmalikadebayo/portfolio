@@ -19,6 +19,10 @@ import {
   GraduationCap,
   Building2,
   Award,
+  Scale,
+  Wallet,
+  Stethoscope,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react"
 import { Navigation } from "@/components/navigation"
@@ -157,32 +161,68 @@ const services = [
   },
 ]
 
-const featureProject = {
-  tag: "Backend Architecture",
-  title: "Apprentago",
-  desc: "Designed and built the complete backend and API layer for a large-scale apprenticeship platform — 22,000+ users and 10,000+ job listings — deployed live on AWS & GCP with RAG-powered assistants.",
-  tech: ["Django", "PostgreSQL", "AWS", "Docker", "RAG"],
-  metric: "22K+ users",
+type WorkItem = {
+  clientLogo?: string // shown only where public / permitted
+  icon?: LucideIcon // fallback mark for confidential clients
+  title: string
+  desc: string
+  role: string
+  employer: string
+  employerLogo: string
 }
 
-const projects = [
+const BRDGE_LOGO = "/brdge-logo.png"
+const AXIOMFUSE_LOGO = "/axiomfuse-logo.png"
+const SUPERNOMICS_LOGO = "/supernomics-logo.svg"
+
+const work: WorkItem[] = [
   {
-    tag: "LLM · Legal",
+    clientLogo: "/apprentago-logo.png",
+    title: "Apprentago",
+    desc: "AI-powered apprenticeship platform — I built the complete backend and API layer for 22,000+ users and 10,000+ job listings.",
+    role: "Backend & API · 2024–25",
+    employer: "BRDGE",
+    employerLogo: BRDGE_LOGO,
+  },
+  {
+    icon: Scale,
     title: "Arabic–English Legal Chatbot",
-    desc: "Llama 3 + Legal GPT on AWS Bedrock, handling 200+ queries/day for a Saudi client with strict data-sovereignty needs.",
-    tech: ["Llama 3", "AWS Bedrock", "RAG"],
+    desc: "Llama 3 + Legal GPT on AWS Bedrock, handling 200+ queries a day for a client with strict data-sovereignty needs.",
+    role: "LLM Engineer",
+    employer: "BRDGE",
+    employerLogo: BRDGE_LOGO,
   },
   {
-    tag: "Blockchain · DeFi",
+    icon: Wallet,
     title: "DeFi Wallet Infrastructure",
-    desc: "Wallet infra integrating Aave, Morpho, Kamino & Jito with real-time position tracking across Ethereum & Solana for 5,000+ users.",
-    tech: ["Solana", "Ethereum", "WebSockets"],
+    desc: "Aave, Morpho, Kamino & Jito integrations with real-time position tracking across Ethereum & Solana for 5,000+ users.",
+    role: "Backend Engineer",
+    employer: "Axiomfuse",
+    employerLogo: AXIOMFUSE_LOGO,
   },
   {
-    tag: "AI · Healthcare",
+    icon: Stethoscope,
     title: "NHS Staffing Platform",
-    desc: "Intelligent job-matching, a real-time insights dashboard and scheduling — 1,400+ professionals and 4,900+ filled jobs.",
-    tech: ["AI Matching", "Node.js", "Dashboards"],
+    desc: "AI job-matching, a real-time staffing insights dashboard and scheduling for NHS Trusts — 4,900+ filled jobs.",
+    role: "AI & Backend",
+    employer: "Axiomfuse",
+    employerLogo: AXIOMFUSE_LOGO,
+  },
+  {
+    icon: ShieldCheck,
+    title: "LLM Safety Pipeline",
+    desc: "Prompt-injection detection and content filtering on Anthropic's Claude API, tuned to reduce harmful outputs at low latency.",
+    role: "AI Engineer",
+    employer: "Supernomics",
+    employerLogo: SUPERNOMICS_LOGO,
+  },
+  {
+    icon: Sparkles,
+    title: "Adaptive Personality Assessment",
+    desc: "GPT-4o assessment with confidence-based trait scoring across 35 attributes and adaptive, gap-driven question selection.",
+    role: "AI Engineer",
+    employer: "Axiomfuse",
+    employerLogo: AXIOMFUSE_LOGO,
   },
 ]
 
@@ -236,6 +276,7 @@ const speakingImages: CarouselImage[] = [
     src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782981329/_80A8658_Original_x4gywk.jpg",
     alt: "Speaking at Google DevFest, Ibadan",
     caption: "Google DevFest, Ibadan",
+    fit: "contain",
   },
   {
     src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782980810/IMG_2766_x8id0d.jpg",
@@ -668,55 +709,46 @@ export default function HomePage() {
               <h2 className="mb-14 font-display text-4xl font-bold md:text-5xl">Where I put the work in.</h2>
             </FadeIn>
 
-            {/* Feature project */}
-            <FadeIn>
-              <div className="mb-8 grid overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-800 to-slate-900 md:grid-cols-2">
-                <div className="p-10">
-                  <span className="text-xs font-bold uppercase tracking-widest text-accent-teal">
-                    {featureProject.tag}
-                  </span>
-                  <h3 className="mt-3 font-display text-3xl font-bold">{featureProject.title}</h3>
-                  <p className="mt-4 leading-relaxed text-slate-400">{featureProject.desc}</p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {featureProject.tech.map((t) => (
-                      <span key={t} className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-300">
-                        {t}
+            <StaggerIn staggerDelay={0.1} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {work.map((p) => (
+                <div
+                  key={p.title}
+                  className="flex flex-col rounded-3xl border border-white/10 bg-slate-800/50 p-6 transition-colors hover:border-primary/40"
+                >
+                  {/* client / product */}
+                  <div className="mb-5 flex h-14 items-center gap-3">
+                    {p.clientLogo ? (
+                      <span className="inline-flex h-14 items-center rounded-xl bg-white px-4">
+                        <img src={p.clientLogo} alt={p.title} className="max-h-7 w-auto max-w-[150px] object-contain" />
                       </span>
-                    ))}
+                    ) : (
+                      <>
+                        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15">
+                          {p.icon && <p.icon className="h-6 w-6 text-primary" />}
+                        </span>
+                        <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                          Confidential
+                        </span>
+                      </>
+                    )}
                   </div>
-                </div>
-                <div className="hidden items-center justify-center bg-primary/10 p-10 md:flex">
-                  <span className="font-display text-6xl font-extrabold text-primary/40">{featureProject.metric}</span>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Other projects */}
-            <StaggerIn staggerDelay={0.12} className="grid gap-6 md:grid-cols-3">
-              {projects.map((p) => (
-                <div key={p.title} className="rounded-3xl border border-white/10 bg-slate-800/50 p-8">
-                  <span className="text-xs font-bold uppercase tracking-widest text-accent-teal">{p.tag}</span>
-                  <h3 className="mt-3 text-xl font-bold">{p.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-400">{p.desc}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {p.tech.map((t) => (
-                      <span key={t} className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-300">
-                        {t}
-                      </span>
-                    ))}
+                  <h3 className="text-lg font-bold">{p.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">{p.desc}</p>
+                  <p className="mt-5 text-xs font-bold uppercase tracking-widest text-accent-teal">{p.role}</p>
+                  {/* employer credit */}
+                  <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4">
+                    <img
+                      src={p.employerLogo}
+                      alt={p.employer}
+                      className="h-5 w-auto max-w-[72px] object-contain"
+                    />
+                    <span className="text-xs text-slate-400">
+                      Built at <span className="font-semibold text-slate-200">{p.employer}</span>
+                    </span>
                   </div>
                 </div>
               ))}
             </StaggerIn>
-
-            <div className="mt-10">
-              <Link
-                href="/portfolio"
-                className="inline-flex items-center gap-2 font-semibold text-primary transition-all hover:gap-3"
-              >
-                View all projects <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
           </div>
         </section>
 
