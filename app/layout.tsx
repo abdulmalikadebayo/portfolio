@@ -1,8 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist } from "next/font/google"
-import { Manrope } from "next/font/google"
+import { Geist, Manrope, Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -14,6 +14,25 @@ const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-manrope",
+})
+
+// Fonts for the redesigned home page
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jakarta",
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jetbrains",
 })
 
 export const metadata: Metadata = {
@@ -28,8 +47,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${manrope.variable} antialiased`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${manrope.variable} ${jakarta.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
+    >
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

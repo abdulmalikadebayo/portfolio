@@ -39,6 +39,9 @@
 
   --radius: 0.5rem;
 
+  /* Teal accent fallback (only actively used by the scoped .home-redesign) */
+  --accent-teal: oklch(0.77 0.13 182);
+
   /* Elegant sidebar colors with blue theme */
   --sidebar: oklch(0.985 0.008 220); /* Light blue-tinted sidebar */
   --sidebar-foreground: oklch(0.345 0.004 247.858); /* Dark text */
@@ -137,8 +140,24 @@
   --font-sans: var(--font-geist);
   --font-serif: var(--font-manrope);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Home redesign fonts (Plus Jakarta Sans / Inter / JetBrains Mono) + teal accent */
+  --font-display: var(--font-jakarta);
+  --font-body: var(--font-inter);
+  --font-code: var(--font-jetbrains);
+  --color-accent-teal: var(--accent-teal);
 }
 
+
+/* Scoped teal theme for the redesigned home page only.
+   Utilities reference --primary / --accent-teal, so overriding them on this
+   wrapper recolors the home page without touching the rest of the site. */
+.home-redesign {
+  --primary: #0d9488; /* teal-600 */
+  --primary-foreground: #ffffff;
+  --accent-teal: #2dd4bf; /* teal-400 */
+  --ring: #0d9488;
+}
 
 @layer base {
   * {

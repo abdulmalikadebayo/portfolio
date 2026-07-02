@@ -1,0 +1,103 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react"
+
+export interface CarouselImage {
+  src: string
+  alt: string
+  caption?: string
+}
+
+interface ImageCarouselProps {
+  images: CarouselImage[]
+  /** Auto-advance interval in ms. Set to 0 to disable autoplay. */
+  interval?: number
+  className?: string
+}
+
+export function ImageCarousel({ images, interval = 4000, className = "" }: ImageCarouselProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(interval > 0)
+
+  const nextSlide = () => setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+
+  useEffect(() => {
+    if (!isAutoPlaying || interval <= 0 || images.length <= 1) return
+    const id = setInterval(nextSlide, interval)
+    return () => clearInterval(id)
+  }, [isAutoPlaying, interval, currentIndex, images.length])
+
+  if (images.length === 0) return null
+
+  return (
+    <div className={`relative overflow-hidden rounded-3xl border border-border bg-muted shadow-2xl ${className}`}>
+      <div
+        className="flex h-full transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {images.map((image, index) => (
+          <div key={index} className="relative h-96 w-full flex-shrink-0 overflow-hidden bg-slate-900 md:h-[520px]">
+            {/* blurred fill so any aspect ratio looks intentional (no cropping of faces) */}
+            <img
+              src={image.src}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
+            />
+            {/* full image, never cropped */}
+            <img src={image.src} alt={image.alt} className="relative h-full w-full object-contain" />
+            {image.caption && (
+              <span className="absolute bottom-4 left-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                {image.caption}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prevSlide}
+            aria-label="Previous image"
+            className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur-sm transition-colors hover:bg-black/40"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={nextSlide}
+            aria-label="Next image"
+            className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur-sm transition-colors hover:bg-black/40"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {interval > 0 && (
+            <button
+              onClick={() => setIsAutoPlaying((v) => !v)}
+              aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white backdrop-blur-sm transition-colors hover:bg-black/40"
+            >
+              {isAutoPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            </button>
+          )}
+
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2.5 w-2.5 rounded-full transition-all ${
+                  index === currentIndex ? "scale-110 bg-white" : "bg-white/50 hover:bg-white/70"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
