@@ -16,7 +16,6 @@ import {
   Cloud,
   ExternalLink,
   Mic,
-  GraduationCap,
   Building2,
   Award,
   Scale,
@@ -28,6 +27,7 @@ import {
 import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
 import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
+import { HighlightRow } from "@/components/highlight-row"
 import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
 
 const GITHUB_URL = "https://github.com/abdulmalikadebayo"
@@ -36,27 +36,8 @@ const EMAIL = "abdulmalikadebayo1@gmail.com"
 
 const heroStats = [
   { value: "28K+", label: "Users reached" },
-  { value: "5", label: "Regions worldwide" },
-  { value: "3", label: "Global companies" },
-]
-
-const impact = [
-  {
-    value: "22,000+",
-    label: "Apprentago users",
-    note: "Backend architecture and APIs I built for a live apprenticeship platform (10,000+ job listings).",
-  },
-  {
-    value: "5,000+",
-    label: "DeFi wallet users",
-    note: "Wallet infrastructure across Ethereum & Solana, built at Axiomfuse.",
-  },
-  {
-    value: "4,900+",
-    label: "NHS jobs filled",
-    note: "AI job-matching for a UK healthcare-staffing platform serving NHS Trusts.",
-  },
-  { value: "3,000+", label: "Keynote audience", note: "Reached in a single talk at Google Dev Fest, Ibadan." },
+  { value: "7", label: "Countries" },
+  { value: "4", label: "Continents" },
 ]
 
 const experience = [
@@ -120,16 +101,6 @@ const experience = [
   },
 ]
 
-const education = {
-  school: "Bowen University",
-  degree: "BSc Computer Science",
-  location: "Osun State, Nigeria",
-  period: "2020 – 2024",
-  thesis: "Development of a Nigerian Sign Language Recognition System",
-  award: "Student Icon 360",
-  awardDesc: "Awarded to outstanding students excelling in academics, leadership, and Community Impact",
-}
-
 const services = [
   {
     no: "01",
@@ -191,7 +162,7 @@ const work: WorkItem[] = [
     clientLogo: "/apprentago-logo.png",
     title: "Apprentago",
     desc: "AI-powered apprenticeship platform. I built the complete backend and API layer for 22,000+ users and 10,000+ job listings.",
-    role: "Backend & API · 2024–25",
+    role: "Backend & API · 2024–2025",
     employer: "BRDGE",
     employerLogo: BRDGE_LOGO,
   },
@@ -374,25 +345,6 @@ function CompanyIdentity({
   return <div className="flex items-center gap-3">{inner}</div>
 }
 
-function HighlightLogo({ logo, icon: Icon, alt }: { logo?: string; icon: LucideIcon; alt: string }) {
-  const [error, setError] = useState(false)
-  if (logo && !error) {
-    return (
-      <img
-        src={logo}
-        alt={alt}
-        className="max-h-12 w-auto max-w-[160px] object-contain object-left"
-        onError={() => setError(true)}
-      />
-    )
-  }
-  return (
-    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-      <Icon className="h-5 w-5 text-primary" />
-    </span>
-  )
-}
-
 export default function HomePage() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const openContact = () => setIsContactModalOpen(true)
@@ -466,26 +418,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 2. SELECTED IMPACT (dark) */}
-        <section className="bg-slate-900 py-24 px-6 text-white">
-          <div className="mx-auto max-w-7xl">
-            <FadeIn>
-              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-accent-teal">Selected Impact</p>
-              <h2 className="mb-14 font-display text-4xl font-bold md:text-5xl">Outcomes, not slideware.</h2>
-            </FadeIn>
-            <StaggerIn staggerDelay={0.12} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {impact.map((item) => (
-                <div key={item.label} className="border-t-2 border-primary bg-slate-800/50 p-8">
-                  <div className="font-display text-4xl font-bold text-primary">{item.value}</div>
-                  <div className="mt-2 font-semibold">{item.label}</div>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-400">{item.note}</p>
-                </div>
-              ))}
-            </StaggerIn>
-          </div>
-        </section>
-
-        {/* 4. EXPERIENCE / CAREER (light) */}
+        {/* 2. EXPERIENCE / CAREER (light) */}
         <section className="bg-slate-50 py-24 px-6">
           <div className="mx-auto max-w-5xl">
             <FadeIn>
@@ -572,54 +505,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 5. EDUCATION (light) */}
-        <section className="bg-white py-24 px-6">
-          <div className="mx-auto max-w-5xl">
-            <FadeIn>
-              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Education</p>
-              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">Where it started.</h2>
-            </FadeIn>
-            <FadeIn>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm md:p-10">
-                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                      <GraduationCap className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-900">{education.school}</h3>
-                      <p className="font-medium text-primary">{education.degree}</p>
-                      <p className="text-sm text-slate-500">{education.location}</p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary md:mt-1">
-                    {education.period}
-                  </span>
-                </div>
-                <dl className="mt-6 grid gap-6 border-t border-slate-200 pt-6 sm:grid-cols-2">
-                  <div>
-                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-400">Thesis</dt>
-                    <dd className="mt-1 text-sm text-slate-600">{education.thesis}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-400">Honors &amp; awards</dt>
-                    <dd className="mt-2 flex items-start gap-2.5">
-                      <Award className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <span className="min-w-0">
-                        <span className="block font-semibold text-slate-900">{education.award}</span>
-                        <span className="mt-0.5 block text-sm leading-relaxed text-slate-500">
-                          {education.awardDesc}
-                        </span>
-                      </span>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-
-        {/* 6. WHY I BUILD (dark) */}
+        {/* 3. WHY I BUILD (dark) */}
         <section className="relative overflow-hidden bg-slate-950 py-24 px-6 text-white">
           <div className="absolute -right-20 top-0 h-96 w-96 rounded-full bg-primary/10 blur-[130px]" />
           <div className="relative mx-auto max-w-5xl">
@@ -667,7 +553,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 6. WHAT I DO + TECH (light) */}
+        {/* 4. WHAT I DO (light) */}
         <section className="bg-white py-24 px-6">
           <div className="mx-auto max-w-7xl">
             <FadeIn>
@@ -706,7 +592,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 7. SELECTED WORK (light) */}
+        {/* 5. SELECTED WORK (light) */}
         <section className="bg-slate-50 py-24 px-6">
           <div className="mx-auto max-w-7xl">
             <FadeIn>
@@ -781,8 +667,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 8. SPEAKING & COMMUNITY (light) */}
-        <section className="bg-slate-50 py-24 px-6">
+        {/* 6. SPEAKING & COMMUNITY (light) */}
+        <section className="bg-white py-24 px-6">
           <div className="mx-auto max-w-6xl">
             <FadeIn>
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Speaking &amp; Community</p>
@@ -799,24 +685,7 @@ export default function HomePage() {
 
             <StaggerIn staggerDelay={0.08} className="border-t border-slate-200">
               {highlights.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 border-b border-slate-200 px-1.5 py-6 transition-[background-color,padding,box-shadow,border-radius] duration-300 hover:z-10 hover:rounded-2xl hover:border-transparent hover:bg-white hover:px-6 hover:shadow-[0_24px_50px_-38px_rgba(16,18,40,0.5)] md:grid-cols-[96px_1fr_auto] md:gap-6"
-                >
-                  <span className="flex h-14 items-center">
-                    <HighlightLogo logo={item.logo} icon={item.icon} alt={item.title} />
-                  </span>
-                  <span className="order-last col-span-2 font-display text-lg font-medium leading-snug tracking-tight text-slate-900 md:order-none md:col-span-1 md:text-xl">
-                    {item.title}
-                  </span>
-                  <span className="flex items-center justify-end gap-3 whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-slate-500">
-                    {item.label}
-                    <ArrowUpRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]" />
-                  </span>
-                </a>
+                <HighlightRow key={item.href} item={item} />
               ))}
             </StaggerIn>
 
@@ -831,7 +700,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 9. CONTACT CTA (dark) */}
+        {/* 7. CONTACT CTA (dark) */}
         <section className="relative overflow-hidden bg-slate-950 py-28 px-6 text-center text-white">
           <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl">
@@ -864,7 +733,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      {/* 10. FOOTER (dark) */}
+      {/* 8. FOOTER (dark) */}
       <footer className="bg-slate-950 px-6 py-16 text-white">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
           <div>

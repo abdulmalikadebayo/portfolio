@@ -1,9 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
-import { Menu, X, Mail, Github, Linkedin, Sun, Moon } from "lucide-react"
+import { Menu, X, Mail, Github, Linkedin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ContactModal } from "@/components/contact-modal"
@@ -33,34 +32,11 @@ const socialLinks = [
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
-  const { resolvedTheme, setTheme } = useTheme()
-
-  // Avoid hydration mismatch: only render theme-dependent icon after mount
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const handleEmailClick = () => {
     setIsContactModalOpen(true)
   }
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark")
-  }
-
-  const ThemeToggle = () => (
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={toggleTheme}
-      className="hover:text-primary hover:bg-primary/10"
-      aria-label="Toggle dark mode"
-    >
-      {mounted && resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-    </Button>
-  )
 
   return (
     <>
@@ -87,7 +63,6 @@ export function Navigation() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <ThemeToggle />
               <Button
                 variant="ghost"
                 size="sm"
@@ -146,7 +121,6 @@ export function Navigation() {
 
                 {/* Mobile Social Links */}
                 <div className="flex items-center space-x-4 px-3 py-2">
-                  <ThemeToggle />
                   <Button
                     variant="ghost"
                     size="sm"

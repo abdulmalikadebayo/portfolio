@@ -1,458 +1,473 @@
 "use client"
 
-import { Navigation } from "@/components/navigation"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { GraduationCap, Award, MapPin, Calendar, Brain, Server, Globe, Users, Target, Lightbulb, ChevronLeft, ChevronRight, Play, Pause, LucideIcon } from "lucide-react"
+import { useState } from "react"
 import Link from "next/link"
-import React, { useState, useEffect } from 'react'
-import {
-  FadeIn,
-  SlideInLeft,
-  SlideInRight,
-  ScaleIn,
-  StaggerIn,
-  FloatingAnimation,
-} from "@/components/animations/reveal-animations"
+import { ArrowRight, FileText, Github, Linkedin, Mail, GraduationCap, Award } from "lucide-react"
+import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
+import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
+import { HighlightRow, type HighlightItem } from "@/components/highlight-row"
+import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
 
-interface CarouselImage {
-  src: string;
-  alt: string;
+const GITHUB_URL = "https://github.com/abdulmalikadebayo"
+const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
+const EMAIL = "abdulmalikadebayo1@gmail.com"
+
+interface Tech {
+  name: string
+  logo: string
 }
 
-interface Skill {
-  name: string;
-  level: number;
-  category: string;
+const techGroups: { label: string; items: Tech[] }[] = [
+  {
+    label: "Languages & Frameworks",
+    items: [
+      { name: "Python", logo: "/tech/python.svg" },
+      { name: "Django", logo: "/tech/django.svg" },
+      { name: "Flask", logo: "/tech/flask.svg" },
+      { name: "FastAPI", logo: "/tech/fastapi.svg" },
+      { name: "JavaScript", logo: "/tech/javascript.svg" },
+      { name: "Electron", logo: "/tech/electron.svg" },
+    ],
+  },
+  {
+    label: "Databases",
+    items: [
+      { name: "PostgreSQL", logo: "/tech/postgresql.svg" },
+      { name: "MySQL", logo: "/tech/mysql.svg" },
+      { name: "MongoDB", logo: "/tech/mongodb.svg" },
+      { name: "Redis", logo: "/tech/redis.svg" },
+    ],
+  },
+  {
+    label: "AI & ML",
+    items: [
+      { name: "OpenAI", logo: "/tech/openai.svg" },
+      { name: "Claude", logo: "/tech/claude.svg" },
+      { name: "Llama", logo: "/tech/meta.svg" },
+      { name: "LangChain", logo: "/tech/langchain.svg" },
+      { name: "LangGraph", logo: "/tech/langgraph.png" },
+      { name: "Hugging Face", logo: "/tech/huggingface.svg" },
+      { name: "PyTorch", logo: "/tech/pytorch.svg" },
+    ],
+  },
+  {
+    label: "Cloud & DevOps",
+    items: [
+      { name: "Docker", logo: "/tech/docker.svg" },
+      { name: "Git", logo: "/tech/git.svg" },
+      { name: "AWS", logo: "/tech/amazonwebservices.svg" },
+      { name: "Google Cloud", logo: "/tech/googlecloud.svg" },
+      { name: "Celery", logo: "/tech/celery.svg" },
+    ],
+  },
+]
+
+const education = {
+  school: "Bowen University",
+  degree: "BSc Computer Science",
+  location: "Osun State, Nigeria",
+  period: "2020 – 2024",
+  thesis: "Development of a Nigerian Sign Language Recognition System",
+  award: "Student Icon 360",
+  awardDesc: "Awarded to outstanding students excelling in academics, leadership, and Community Impact",
 }
 
-interface Achievement {
-  title: string;
-  description: string;
-  year: string;
-  icon: LucideIcon;
-}
+const leadership: HighlightItem[] = [
+  {
+    logo: "/gdg-logo.png",
+    title: "Google DevFest, Ibadan, Speaker",
+    label: "Talk · 3,000+",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7406264295312945153/",
+  },
+  {
+    logo: "/nyp-logo.jpg",
+    title: "Nigeria Youth Parliament, Speaker",
+    label: "Talk · 150+",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7425463424467464193/",
+  },
+  {
+    logo: "/btw-logo.jpg",
+    title: "Bowen Tech Week, Co-Founder",
+    label: "Co-Founder",
+    href: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7335357587925688321/",
+  },
+  {
+    logo: "/nacos-logo.jpg",
+    title: "NACOS Bowen, President",
+    label: "President · 800+",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7231974579848531968/",
+  },
+]
 
-interface ExpertiseArea {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  technologies: string[];
-}
+const writing: HighlightItem[] = [
+  {
+    logo: "/linkedin-logo.svg",
+    title: "Shipping AI Solutions from Lagos to the World: A One-Year Retrospective",
+    label: "4k+ impressions",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7344298946644574209/",
+  },
+  {
+    logo: "/linkedin-logo.svg",
+    title: "Lessons from Google DevFest Ibadan: Building Scalable AI Systems",
+    label: "3,965 impressions",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7406264295312945153/",
+  },
+  {
+    logo: "/linkedin-logo.svg",
+    title: "A Year as President of NACOS Bowen: Innovation & Excellence",
+    label: "3,450 impressions",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7231974579848531968/",
+  },
+  {
+    logo: "/linkedin-logo.svg",
+    title: "AI and the Future of Work: Adapt, Don't Resist",
+    label: "1,437 impressions",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7425463424467464193/",
+  },
+]
 
-const ImageCarousel: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+const featured: HighlightItem[] = [
+  {
+    logo: "/axiomfuse-logo.png",
+    title: "Meet Abdul-Malik Adebayo: Software Engineer at Axiom Fuse",
+    label: "Feature",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7426573116140773376/",
+  },
+  {
+    logo: "/brdge-logo.png",
+    title: "Tech Journeys That Inspire: Abdul-Malik at Bowen Tech Week 2.0",
+    label: "Feature",
+    href: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7335357587925688321/",
+  },
+]
 
-  const images: CarouselImage[] = [
-    {
-      src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196080/IMG_0711_cbcnks.jpg",
-      alt: "BTW 2.0"
-    },
-    {
-      src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196078/IMG_0713_zfi7bj.jpg",
-      alt: "BTW 2.0"
-    },
-    {
-      src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196078/IMG_0712_hdy03t.jpg",
-      alt: "BTW 2.0"
-    }
-  ];
+const speakingImages: CarouselImage[] = [
+  {
+    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782981329/_80A8658_Original_x4gywk.jpg",
+    alt: "Speaking at Google DevFest, Ibadan",
+    caption: "Google DevFest, Ibadan",
+    fit: "contain",
+  },
+  {
+    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782980810/IMG_2766_x8id0d.jpg",
+    alt: "Speaking at Google DevFest, Ibadan",
+    caption: "Google DevFest, Ibadan",
+  },
+  {
+    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196080/IMG_0711_cbcnks.jpg",
+    alt: "Speaking at Bowen Tech Week",
+    caption: "Bowen Tech Week",
+  },
+  {
+    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196078/IMG_0713_zfi7bj.jpg",
+    alt: "Speaking at Bowen Tech Week",
+    caption: "Bowen Tech Week",
+  },
+]
 
-  const nextSlide = (): void => {
-    setCurrentIndex((prevIndex: number) => 
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevSlide = (): void => {
-    setCurrentIndex((prevIndex: number) => 
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goToSlide = (index: number): void => {
-    setCurrentIndex(index);
-  };
-
-  const toggleAutoPlay = (): void => {
-    setIsAutoPlaying(!isAutoPlaying);
-  };
-
-  useEffect(() => {
-    if (isAutoPlaying) {
-      const interval = setInterval(nextSlide, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [isAutoPlaying, currentIndex]);
-
+function TechTile({ tech }: { tech: Tech }) {
+  const [error, setError] = useState(false)
   return (
-    <FadeIn>
-      <div className="w-full max-w-6xl mx-auto bg-card/50 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-primary/20">
-        <div className="relative h-96 md:h-[700px] overflow-hidden bg-muted">
-          <div 
-            className="flex transition-transform duration-500 ease-in-out h-full"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {images.map((image: CarouselImage, index: number) => (
-              <div
-                key={index}
-                className="w-full flex-shrink-0 relative"
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full flex items-center justify-center hover:bg-background/30 transition-all duration-200 group cursor-pointer"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="w-6 h-6 text-white group-hover:text-primary" />
-          </button>
-          
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full flex items-center justify-center hover:bg-background/30 transition-all duration-200 group cursor-pointer"
-            aria-label="Next image"
-          >
-            <ChevronRight className="w-6 h-6 text-white group-hover:text-primary" />
-          </button>
-
-          <button
-            onClick={toggleAutoPlay}
-            className="absolute top-4 right-4 w-10 h-10 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full flex items-center justify-center hover:bg-background/30 transition-all duration-200 cursor-pointer"
-            aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
-          >
-            {isAutoPlaying ? (
-              <Pause className="w-4 h-4 text-white" />
-            ) : (
-              <Play className="w-4 h-4 text-white" />
-            )}
-          </button>
-
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-            {images.map((_: CarouselImage, index: number) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-200 ${
-                  index === currentIndex 
-                    ? 'bg-white scale-110' 
-                    : 'bg-white/50 hover:bg-white/70'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </FadeIn>
-  );
-};
-
-const AboutPage: React.FC = () => {
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
-  const handleEmailClick = () => {
-    setIsContactModalOpen(true)
-  }
-
-  const skills: Skill[] = [
-    { name: "Python", level: 95, category: "Programming" },
-    { name: "Machine Learning", level: 90, category: "AI/ML" },
-    { name: "Natural Language Processing", level: 88, category: "AI/ML" },
-    { name: "Node.js", level: 85, category: "Backend" },
-    { name: "Docker", level: 82, category: "DevOps" },
-    { name: "AWS/GCP", level: 80, category: "Cloud" },
-    { name: "PostgreSQL", level: 85, category: "Database" },
-    { name: "API Development", level: 90, category: "Backend" },
-  ]
-
-  const achievements: Achievement[] = [
-    {
-      title: "Student Icon 360",
-      description: "Outstanding student excelling in academics, leadership, and community impact",
-      year: "2024",
-      icon: Award,
-    },
-    {
-      title: "MTN Foundation Scholarship",
-      description: "Science and Technology Scholarship recipient",
-      year: "2023",
-      icon: GraduationCap,
-    },
-    {
-      title: "Most Outstanding Student",
-      description: "Computer Science Department, Bowen University",
-      year: "2022",
-      icon: Target,
-    },
-  ]
-
-  const expertise: ExpertiseArea[] = [
-    {
-      title: "AI Research & Development",
-      description: "Specializing in machine learning, NLP, and computer vision with focus on practical applications",
-      icon: Brain,
-      technologies: ["TensorFlow", "PyTorch", "Scikit-learn", "OpenCV"],
-    },
-    {
-      title: "Backend Engineering",
-      description: "Building scalable, high-performance backend systems and APIs for enterprise applications",
-      icon: Server,
-      technologies: ["Node.js", "Python", "PostgreSQL", "Redis"],
-    },
-    {
-      title: "Cloud & DevOps",
-      description: "Deploying and managing applications on cloud platforms with CI/CD best practices",
-      icon: Globe,
-      technologies: ["AWS", "GCP", "Docker", "GitHub Actions"],
-    },
-  ]
-
-  return (
-    <div className="min-h-screen">
-      <Navigation />
-      <main className="pt-16">
-        <section className="py-20 bg-gradient-to-br from-background via-muted/30 to-primary/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <SlideInLeft>
-                <div className="relative">
-                  <ScaleIn>
-                    <Card className="p-8 bg-card/50 backdrop-blur-sm border-2 border-primary/20">
-                      <div className="text-center space-y-6">
-                        <div className="w-48 h-48 mx-auto bg-gradient-to-br from-primary/20 to-accent/20 rounded-full flex items-center justify-center border-4 border-primary/30">
-                          <img 
-                            src="https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756197152/OBD_1848_cvlyxt.jpg" 
-                            alt="Avatar" 
-                            className="w-full h-full object-cover rounded-full"
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <h1 className="text-3xl font-bold font-serif">Adebayo Abdul-Malik</h1>
-                          <p className="text-lg text-primary font-medium">AI Researcher & Backend Engineer</p>
-                          <div className="flex items-center justify-center space-x-2 text-muted-foreground">
-                            <MapPin className="h-4 w-4" />
-                            <span>Lagos, Nigeria</span>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-center space-x-4">
-                          <Badge variant="secondary">Available for hire</Badge>
-                          <Badge variant="outline">Remote friendly</Badge>
-                        </div>
-                      </div>
-                    </Card>
-                  </ScaleIn>
-
-                  <FloatingAnimation>
-                    <div className="absolute -top-4 -right-4 w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center border border-accent/20">
-                      <Lightbulb className="h-6 w-6 text-accent" />
-                    </div>
-                  </FloatingAnimation>
-                </div>
-              </SlideInLeft>
-
-              <SlideInRight>
-                <div className="space-y-8">
-                  <FadeIn>
-                    <div className="space-y-4">
-                      <h2 className="text-4xl font-bold font-serif text-primary">Who am I?</h2>
-                      <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
-                        <p>
-                          I'm a passionate AI researcher and backend engineer with a strong foundation in computer
-                          science and a drive to solve complex problems through innovative technology solutions.
-                        </p>
-                        <p>
-                          Currently working as an AI Development Analyst at BRDGE, where I lead the development of
-                          multilingual AI chatbots and custom AI implementations for global clients across Europe, Asia,
-                          and Africa.
-                        </p>
-                        <p>
-                          My expertise spans from developing machine learning models for sign language recognition to
-                          building scalable backend architectures that serve thousands of users.
-                        </p>
-                      </div>
-                    </div>
-                  </FadeIn>
-
-                  <StaggerIn staggerDelay={0.1}>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="flex items-center space-x-3">
-                        <GraduationCap className="h-5 w-5 text-primary" />
-                        <div>
-                          <div className="font-medium">Education</div>
-                          <div className="text-sm text-muted-foreground">BSc Computer Science</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Calendar className="h-5 w-5 text-primary" />
-                        <div>
-                          <div className="font-medium">Experience</div>
-                          <div className="text-sm text-muted-foreground">4+ Years</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Users className="h-5 w-5 text-primary" />
-                        <div>
-                          <div className="font-medium">Users Served</div>
-                          <div className="text-sm text-muted-foreground">30,000+</div>
-                        </div>
-                      </div>
-                    </div>
-                  </StaggerIn>
-                </div>
-              </SlideInRight>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-muted/20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ImageCarousel />
-          </div>
-        </section>
-
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <FadeIn>
-              <div className="text-center space-y-4 mb-16">
-                <h2 className="text-4xl font-bold font-serif text-primary">What I do?</h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  I specialize in developing intelligent systems and robust backend solutions that drive innovation and
-                  create meaningful impact.
-                </p>
-              </div>
-            </FadeIn>
-
-            <StaggerIn staggerDelay={0.2}>
-              <div className="grid md:grid-cols-3 gap-8">
-                {expertise.map((item: ExpertiseArea, index: number) => (
-                  <Card
-                    key={index}
-                    className="p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
-                  >
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <item.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <h3 className="text-xl font-semibold">{item.title}</h3>
-                      <p className="text-muted-foreground">{item.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.technologies.map((tech: string) => (
-                          <Badge key={tech} variant="outline" className="text-xs">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </StaggerIn>
-          </div>
-        </section>
-
-        <section className="py-20 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <FadeIn>
-              <div className="text-center space-y-4 mb-16">
-                <h2 className="text-4xl font-bold font-serif text-primary">Skills & Expertise</h2>
-                <p className="text-lg text-muted-foreground">
-                  Technical proficiencies developed through academic research and professional experience
-                </p>
-              </div>
-            </FadeIn>
-
-            <StaggerIn staggerDelay={0.3}>
-              <div className="grid md:grid-cols-2 gap-8">
-                {skills.map((skill: Skill, index: number) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">{skill.name}</span>
-                      <Badge variant="outline">{skill.category}</Badge>
-                    </div>
-                    <div className="w-full bg-border rounded-full h-2">
-                      <div
-                        className="bg-primary h-2 rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </StaggerIn>
-          </div>
-        </section>
-
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <FadeIn>
-              <div className="text-center space-y-4 mb-16">
-                <h2 className="text-4xl font-bold font-serif text-primary">Achievements & Recognition</h2>
-                <p className="text-lg text-muted-foreground">
-                  Awards and honors recognizing academic excellence and leadership
-                </p>
-              </div>
-            </FadeIn>
-
-            <StaggerIn staggerDelay={0.4}>
-              <div className="grid md:grid-cols-3 gap-8">
-                {achievements.map((achievement: Achievement, index: number) => (
-                  <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300">
-                    <div className="space-y-4">
-                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
-                        <achievement.icon className="h-8 w-8 text-accent" />
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-lg font-semibold">{achievement.title}</h3>
-                        <p className="text-sm text-muted-foreground">{achievement.description}</p>
-                        <Badge variant="secondary">{achievement.year}</Badge>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </StaggerIn>
-          </div>
-        </section>
-
-        <section className="py-20 bg-primary/5">
-          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <FadeIn>
-              <h2 className="text-3xl lg:text-4xl font-bold font-serif mb-6">Ready to collaborate?</h2>
-            </FadeIn>
-            <FadeIn>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                I'm always open to discussing new opportunities, research collaborations, and innovative projects in AI
-                and backend development.
-              </p>
-            </FadeIn>
-            {/* <FadeIn delay={0.2}> */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" onClick={handleEmailClick} className="!cursor-pointer">
-                  Get In Touch
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link href="/portfolio">View My Work</Link>
-                </Button>
-              </div>
-            {/* </FadeIn> */}
-          </div>
-        </section>
-        <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
-      </main>
+    <div
+      className="flex flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 text-center transition-shadow hover:shadow-md"
+      title={tech.name}
+    >
+      <span className="flex h-9 w-9 items-center justify-center md:h-11 md:w-11">
+        {error ? (
+          <span className="flex h-full w-full items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+            {tech.name.slice(0, 2)}
+          </span>
+        ) : (
+          <img
+            src={tech.logo}
+            alt={tech.name}
+            loading="lazy"
+            className="h-full w-full object-contain"
+            onError={() => setError(true)}
+          />
+        )}
+      </span>
+      <span className="text-[11px] font-medium leading-tight text-slate-600">{tech.name}</span>
     </div>
   )
 }
 
-export default AboutPage
+export default function AboutPage() {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const openContact = () => setIsContactModalOpen(true)
+
+  return (
+    <div className="home-redesign font-body">
+      <Navigation />
+
+      <main className="pt-20">
+        {/* 1. INTRO (dark) */}
+        <section className="relative overflow-hidden bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
+          <div className="absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-primary/20 blur-[140px]" />
+          <div className="relative mx-auto max-w-3xl px-6 py-24">
+            <SlideInLeft className="space-y-8">
+              <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-accent-teal">
+                <span className="h-px w-8 bg-accent-teal" /> About
+              </p>
+              <h1 className="font-display text-5xl font-extrabold leading-[1.05] md:text-6xl">
+                The engineer <br />
+                <span className="text-primary italic">behind the work.</span>
+              </h1>
+              <p className="max-w-xl text-lg leading-relaxed text-slate-400">
+                I'm Adebayo, a Senior AI &amp; Backend Engineer from Lagos, building production LLM systems and scalable
+                backends for teams across four continents, from research all the way to reliable deployment.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/resume"
+                  className="flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                >
+                  <FileText className="h-4 w-4" /> View Resume
+                </Link>
+                <button
+                  onClick={openContact}
+                  className="flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-semibold transition-colors hover:border-white/60"
+                >
+                  Work with me <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </SlideInLeft>
+          </div>
+        </section>
+
+        {/* 2. MY STORY (light) */}
+        <section className="bg-slate-50 py-24 px-6">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[0.8fr_1fr]">
+            <SlideInLeft>
+              <div className="relative">
+                <div className="absolute inset-0 rounded-3xl bg-primary/10 blur-2xl" />
+                <img
+                  src="https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756197152/OBD_1848_cvlyxt.jpg"
+                  alt="Adebayo Abdul-Malik"
+                  className="relative h-[26rem] w-full rounded-3xl border border-slate-200 object-cover shadow-lg"
+                />
+              </div>
+            </SlideInLeft>
+            <SlideInRight className="space-y-6">
+              <p className="text-sm font-bold uppercase tracking-widest text-primary">My story</p>
+              <h2 className="font-display text-4xl font-bold text-slate-900 md:text-5xl">From research to real-world.</h2>
+              <div className="space-y-4 text-lg leading-relaxed text-slate-600">
+                <p>
+                  My path started in AI research at Bowen University, where my final-year thesis built a Nigerian Sign
+                  Language recognition system, a project obsessed with correctness, evaluation and getting the details
+                  right.
+                </p>
+                <p>
+                  Since then I've shipped production AI and backend systems for companies from San Francisco to London,
+                  Supernomics, Axiomfuse and BRDGE, serving clients across the US, Europe, Asia, the Gulf and Africa.
+                </p>
+                <p>
+                  What I care about most is the space where research rigour meets production reality: systems that are
+                  correct, and that also hold up at scale when real people depend on them.
+                </p>
+              </div>
+            </SlideInRight>
+          </div>
+        </section>
+
+        {/* 3. TECH STACK (light) */}
+        <section className="bg-white py-24 px-6">
+          <div className="mx-auto max-w-6xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Toolkit</p>
+              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">The tools I build with.</h2>
+            </FadeIn>
+            <StaggerIn staggerDelay={0.1} className="grid gap-6 lg:grid-cols-2">
+              {techGroups.map((group) => (
+                <div key={group.label} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8">
+                  <p className="mb-5 text-sm font-bold text-slate-900">{group.label}</p>
+                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
+                    {group.items.map((tech) => (
+                      <TechTile key={tech.name} tech={tech} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </StaggerIn>
+          </div>
+        </section>
+
+        {/* 4. EDUCATION (light) */}
+        <section className="bg-slate-50 py-24 px-6">
+          <div className="mx-auto max-w-5xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Education</p>
+              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">Where it started.</h2>
+            </FadeIn>
+            <FadeIn>
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm md:p-10">
+                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                      <GraduationCap className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-900">{education.school}</h3>
+                      <p className="font-medium text-primary">{education.degree}</p>
+                      <p className="text-sm text-slate-500">{education.location}</p>
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary md:mt-1">
+                    {education.period}
+                  </span>
+                </div>
+                <dl className="mt-6 grid gap-6 border-t border-slate-200 pt-6 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-400">Thesis</dt>
+                    <dd className="mt-1 text-sm text-slate-600">{education.thesis}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-400">Honors &amp; awards</dt>
+                    <dd className="mt-2 flex items-start gap-2.5">
+                      <Award className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      <span className="min-w-0">
+                        <span className="block font-semibold text-slate-900">{education.award}</span>
+                        <span className="mt-0.5 block text-sm leading-relaxed text-slate-500">
+                          {education.awardDesc}
+                        </span>
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* 5. LEADERSHIP & COMMUNITY (light) */}
+        <section className="bg-white py-24 px-6">
+          <div className="mx-auto max-w-6xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Leadership &amp; Community</p>
+              <h2 className="mb-4 font-display text-4xl font-bold text-slate-900 md:text-5xl">On stage, in community.</h2>
+              <p className="mb-12 max-w-2xl text-lg text-slate-600">
+                From keynote stages to student leadership, sharing what I learn building AI and helping others get there
+                faster.
+              </p>
+            </FadeIn>
+
+            <FadeIn>
+              <ImageCarousel images={speakingImages} className="mb-12" />
+            </FadeIn>
+
+            <StaggerIn staggerDelay={0.08} className="border-t border-slate-200">
+              {leadership.map((item) => (
+                <HighlightRow key={item.href} item={item} />
+              ))}
+            </StaggerIn>
+          </div>
+        </section>
+
+        {/* 6. WRITING & FEATURES (light) */}
+        <section className="bg-slate-50 py-24 px-6">
+          <div className="mx-auto max-w-6xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Writing &amp; Features</p>
+              <h2 className="mb-12 font-display text-4xl font-bold text-slate-900 md:text-5xl">Ideas worth sharing.</h2>
+            </FadeIn>
+
+            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-400">Writing</p>
+            <StaggerIn staggerDelay={0.08} className="border-t border-slate-200">
+              {writing.map((item) => (
+                <HighlightRow key={item.href} item={item} />
+              ))}
+            </StaggerIn>
+
+            <p className="mb-4 mt-12 text-xs font-bold uppercase tracking-widest text-slate-400">Featured</p>
+            <StaggerIn staggerDelay={0.08} className="border-t border-slate-200">
+              {featured.map((item) => (
+                <HighlightRow key={item.href} item={item} />
+              ))}
+            </StaggerIn>
+          </div>
+        </section>
+
+        {/* 7. CONTACT CTA (dark) */}
+        <section className="relative overflow-hidden bg-slate-950 py-28 px-6 text-center text-white">
+          <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
+          <div className="relative mx-auto max-w-3xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-accent-teal">Let's talk</p>
+              <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl">
+                Let's build something <span className="text-primary">ambitious.</span>
+              </h2>
+              <p className="mx-auto mt-6 max-w-xl text-lg text-slate-400">
+                Whether it's an AI system, a backend platform or a research collaboration, let's start a conversation.
+              </p>
+              <div className="mt-10 flex flex-wrap justify-center gap-4">
+                <button
+                  onClick={openContact}
+                  className="flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                >
+                  Get in touch <ArrowRight className="h-4 w-4" />
+                </button>
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-full border border-white/25 px-8 py-3.5 font-semibold transition-colors hover:border-white/60"
+                >
+                  <Linkedin className="h-4 w-4" /> Connect on LinkedIn
+                </a>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+      </main>
+
+      {/* 8. FOOTER (dark) */}
+      <footer className="bg-slate-950 px-6 py-16 text-white">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
+          <div>
+            <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
+              Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+            </p>
+          </div>
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Explore</p>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li><Link href="/" className="hover:text-primary">Home</Link></li>
+              <li><Link href="/about" className="hover:text-primary">About</Link></li>
+              <li><Link href="/resume" className="hover:text-primary">Resume</Link></li>
+              <li><Link href="/portfolio" className="hover:text-primary">Portfolio</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Connect</p>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 hover:text-primary">
+                  <Mail className="h-4 w-4" /> Email
+                </a>
+              </li>
+              <li>
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                  <Linkedin className="h-4 w-4" /> LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                  <Github className="h-4 w-4" /> GitHub
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-slate-500 md:flex-row">
+          <span>© {new Date().getFullYear()} Adebayo Abdul-Malik.</span>
+          <span>Lagos, Nigeria</span>
+        </div>
+      </footer>
+
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+    </div>
+  )
+}
