@@ -20,7 +20,6 @@ const education = {
   school: "Bowen University",
   degree: "BSc Computer Science",
   location: "Osun State, Nigeria",
-  period: "2020 – 2024",
   thesis: "Development of a Nigerian Sign Language Recognition System",
   award: "Student Icon 360",
   awardDesc: "Awarded to outstanding students excelling in academics, leadership, and Community Impact",
@@ -208,9 +207,6 @@ export default function AboutPage() {
                       <p className="text-sm text-slate-500">{education.location}</p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary md:mt-1">
-                    {education.period}
-                  </span>
                 </div>
                 <dl className="mt-6 grid gap-6 border-t border-slate-200 pt-6 sm:grid-cols-2">
                   <div>

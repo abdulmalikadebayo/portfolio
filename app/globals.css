@@ -177,3 +177,26 @@
     background-size: 20px 20px;
   }
 }
+
+/* Seamless marquee (same technique as brdge.ai's capability ticker): the track
+   holds the list twice and slides to -50%, so the second copy lands exactly
+   where the first started. GPU-friendly transform only. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 32s) linear infinite;
+}
+.marquee-pause:hover .animate-marquee {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}

@@ -26,12 +26,28 @@ import { ContactModal } from "@/components/contact-modal"
 import { ImageCarousel } from "@/components/image-carousel"
 import { HighlightRow } from "@/components/highlight-row"
 import { work, WorkCard } from "@/components/work-card"
+import { Marquee } from "@/components/marquee"
 import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
 import { profile, experience, speakingImages } from "@/lib/data"
 
 const GITHUB_URL = profile.github
 const LINKEDIN_URL = profile.linkedin
 const EMAIL = profile.email
+
+const capabilities = [
+  "Applied AI",
+  "LLM Systems",
+  "RAG Pipelines",
+  "Agentic AI",
+  "Forward-Deployed Engineering",
+  "Backend Engineering",
+  "API Design",
+  "SaaS",
+  "Cloud & DevOps",
+  "LLM Safety",
+  "Fine-Tuning",
+  "ML Engineering",
+]
 
 const heroStats = [
   { value: "23K+", label: "Users reached" },
@@ -239,8 +255,8 @@ export default function HomePage() {
                   className="h-[30rem] w-full object-cover"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                  <p className="font-display text-lg font-bold">Adebayo Abdul-Malik</p>
-                  <p className="text-sm text-slate-300">AI &amp; Backend Engineer · Lagos, Nigeria</p>
+                  <p className="font-display text-lg font-bold">AI &amp; Backend Engineer</p>
+                  <p className="text-sm text-slate-300">Lagos, Nigeria · Available for remote work</p>
                 </div>
               </div>
             </SlideInRight>
@@ -251,6 +267,12 @@ export default function HomePage() {
             <ChevronDown className="h-4 w-4 animate-bounce" />
           </div>
         </section>
+
+        {/* Capabilities ticker (brand band between hero and content) */}
+        <Marquee
+          items={capabilities}
+          className="border-y border-white/10 bg-[#081a3d] py-4 text-slate-300"
+        />
 
         {/* 2. EXPERIENCE / CAREER (light) */}
         <section className="bg-slate-50 py-24 px-6">
