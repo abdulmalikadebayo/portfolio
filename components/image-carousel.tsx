@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react"
 
 export interface CarouselImage {
@@ -45,17 +46,22 @@ export function ImageCarousel({ images, interval = 4000, className = "" }: Image
             <div key={index} className="relative h-96 w-full flex-shrink-0 overflow-hidden bg-muted md:h-[640px]">
               {contain && (
                 // blurred fill so tall portraits look intentional instead of leaving bars
-                <img
+                <Image
                   src={image.src}
                   alt=""
                   aria-hidden="true"
-                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
+                  fill
+                  sizes="(min-width: 768px) 1152px, 100vw"
+                  className="scale-110 object-cover opacity-40 blur-2xl"
                 />
               )}
-              <img
+              <Image
                 src={image.src}
                 alt={image.alt}
-                className={`relative h-full w-full ${contain ? "object-contain" : "object-cover"}`}
+                fill
+                priority={index === 0}
+                sizes="(min-width: 768px) 1152px, 100vw"
+                className={`relative ${contain ? "object-contain" : "object-cover"}`}
               />
               {image.caption && (
                 <span className="absolute bottom-4 left-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">

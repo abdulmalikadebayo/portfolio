@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   ArrowRight,
   FileText,
@@ -22,80 +23,20 @@ import {
 import { Navigation } from "@/components/navigation"
 import { IntroLoader } from "@/components/intro-loader"
 import { ContactModal } from "@/components/contact-modal"
-import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
+import { ImageCarousel } from "@/components/image-carousel"
 import { HighlightRow } from "@/components/highlight-row"
 import { work, WorkCard } from "@/components/work-card"
 import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
+import { profile, experience, speakingImages } from "@/lib/data"
 
-const GITHUB_URL = "https://github.com/abdulmalikadebayo"
-const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
-const EMAIL = "abdulmalikadebayo1@gmail.com"
+const GITHUB_URL = profile.github
+const LINKEDIN_URL = profile.linkedin
+const EMAIL = profile.email
 
 const heroStats = [
   { value: "23K+", label: "Users reached" },
   { value: "7", label: "Countries" },
   { value: "3", label: "Continents" },
-]
-
-const experience = [
-  {
-    company: "Supernomics",
-    website: "https://www.supernomics.ai",
-    logo: "/supernomics-logo.svg",
-    logoType: "wordmark",
-    employment: "Contract",
-    location: "San Francisco, US · Remote",
-    period: "Jan 2026 – Present",
-    roles: [
-      {
-        title: "Senior AI Engineer (LLM & Applied ML)",
-        period: "Jan 2026 – Present",
-        summary:
-          "Building LLM safety pipelines on Anthropic's Claude API and modernising desktop infrastructure for AI feature deployment.",
-      },
-    ],
-    tags: ["Claude API", "LLM Safety", "Electron.js"],
-  },
-  {
-    company: "Axiomfuse",
-    website: "https://axiomfuse.com",
-    logo: "/axiomfuse-logo.png",
-    employment: "Full-time",
-    location: "London, UK · Remote",
-    period: "Nov 2025 – Present",
-    roles: [
-      {
-        title: "Software Engineer (AI & Backend)",
-        period: "Nov 2025 – Present",
-        summary:
-          "DeFi wallet infrastructure across Ethereum & Solana (5,000+ users), plus AI features for an NHS healthcare-staffing platform.",
-      },
-    ],
-    tags: ["Solana", "Ethereum", "GPT-4o", "WebSockets"],
-  },
-  {
-    company: "BRDGE",
-    website: "https://www.brdge.ai",
-    logo: "/brdge-logo.png",
-    employment: "Full-time",
-    location: "London, UK · Remote",
-    period: "Jun 2024 – Nov 2025",
-    roles: [
-      {
-        title: "AI Development Analyst",
-        period: "Feb 2025 – Nov 2025",
-        summary:
-          "Shipped an Arabic–English legal chatbot on AWS Bedrock (Llama 3, 200+ queries/day) for a Saudi client, and delivered custom AI for clients across Europe, Asia and Africa.",
-      },
-      {
-        title: "AI Researcher & Engineer",
-        period: "Jun 2024 – Feb 2025",
-        summary:
-          "Built Apprentago's entire backend and API layer (22,000+ users, 10,000+ job listings) with RAG-powered AI assistants shipped on AWS & GCP.",
-      },
-    ],
-    tags: ["Llama 3", "AWS Bedrock", "RAG", "Django"],
-  },
 ]
 
 const services = [
@@ -171,45 +112,6 @@ const highlights: { logo?: string; icon: LucideIcon; title: string; label: strin
     title: "Tech Journeys That Inspire: Abdul-Malik at Bowen Tech Week 2.0",
     label: "Feature",
     href: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7335357587925688321/",
-  },
-]
-
-const speakingImages: CarouselImage[] = [
-  {
-    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782981329/_80A8658_Original_x4gywk.jpg",
-    alt: "Speaking at Google DevFest, Ibadan",
-    caption: "Google DevFest, Ibadan",
-    fit: "contain",
-  },
-  {
-    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782980810/IMG_2766_x8id0d.jpg",
-    alt: "Speaking at Google DevFest, Ibadan",
-    caption: "Google DevFest, Ibadan",
-  },
-  {
-    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/nyp1_eazyrn",
-    alt: "Speaking at the Nigeria Youth Parliament",
-    caption: "Nigeria Youth Parliament",
-  },
-  {
-    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782980354/nyp2_tnqmfs.jpg",
-    alt: "Speaking at the Nigeria Youth Parliament",
-    caption: "Nigeria Youth Parliament",
-  },
-  {
-    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196080/IMG_0711_cbcnks.jpg",
-    alt: "Speaking at Bowen Tech Week",
-    caption: "Bowen Tech Week",
-  },
-  {
-    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196078/IMG_0713_zfi7bj.jpg",
-    alt: "Speaking at Bowen Tech Week",
-    caption: "Bowen Tech Week",
-  },
-  {
-    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196078/IMG_0712_hdy03t.jpg",
-    alt: "Speaking at Bowen Tech Week",
-    caption: "Bowen Tech Week",
   },
 ]
 
@@ -296,7 +198,7 @@ export default function HomePage() {
                 <span className="text-primary italic">real-world impact.</span>
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-slate-400">
-                Senior AI &amp; Backend Engineer building production LLM systems and scalable infrastructure for clients
+                AI &amp; Backend Engineer building production LLM systems and scalable infrastructure for clients
                 across the US, Europe, Asia, the Gulf and Africa: RAG pipelines, agentic workflows and cloud, shipped
                 with reliability, security and scale.
               </p>
@@ -327,14 +229,18 @@ export default function HomePage() {
             <SlideInRight className="relative mx-auto w-full max-w-md">
               <div className="absolute inset-0 bg-primary/20 blur-[90px]" />
               <div className="relative overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-                <img
+                <Image
                   src="https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756197152/OBD_1829_puui1n.jpg"
                   alt="Adebayo Abdul-Malik"
+                  width={448}
+                  height={480}
+                  priority
+                  sizes="(min-width: 1024px) 448px, 100vw"
                   className="h-[30rem] w-full object-cover"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                   <p className="font-display text-lg font-bold">Adebayo Abdul-Malik</p>
-                  <p className="text-sm text-slate-300">Senior AI &amp; Backend Engineer · Lagos, Nigeria</p>
+                  <p className="text-sm text-slate-300">AI &amp; Backend Engineer · Lagos, Nigeria</p>
                 </div>
               </div>
             </SlideInRight>
@@ -358,7 +264,7 @@ export default function HomePage() {
               {/* timeline line */}
               <div className="absolute bottom-6 left-[11px] top-6 w-px bg-slate-200 md:left-[15px]" />
               <StaggerIn staggerDelay={0.15} className="space-y-6">
-                {experience.map((job) => (
+                {experience.slice(0, 3).map((job) => (
                   <div key={`${job.company}-${job.period}`} className="relative pl-10 md:pl-14">
                     {/* teal node */}
                     <span className="absolute left-0 top-8 flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 ring-4 ring-slate-50 md:h-8 md:w-8">
@@ -621,7 +527,7 @@ export default function HomePage() {
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-              Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+              AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
             </p>
           </div>
           <div>

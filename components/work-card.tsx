@@ -208,7 +208,7 @@ export function WorkCard({ item, showStack = false }: { item: WorkItem; showStac
           Built at <span className="font-semibold text-slate-900">{item.employer}</span>
         </span>
         <img src={item.employerLogo} alt={item.employer} className="h-5 w-auto max-w-[72px] object-contain" />
-        {item.period && <span className="ml-auto text-xs text-slate-400">{item.period}</span>}
+        {item.period && <span className="ml-auto text-xs text-slate-500">{item.period}</span>}
       </div>
     </>
   )

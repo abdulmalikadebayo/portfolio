@@ -6,6 +6,7 @@ import { Menu, X, Mail, Github, Linkedin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ContactModal } from "@/components/contact-modal"
+import { profile } from "@/lib/data"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -17,16 +18,8 @@ const navigation = [
 ]
 
 const socialLinks = [
-  {
-    name: "GitHub",
-    href: "https://github.com/abdulmalikadebayo",
-    icon: Github,
-  },
-  {
-    name: "LinkedIn",
-    href: "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/",
-    icon: Linkedin,
-  },
+  { name: "GitHub", href: profile.github, icon: Github },
+  { name: "LinkedIn", href: profile.linkedin, icon: Linkedin },
 ]
 
 export function Navigation() {
@@ -43,8 +36,8 @@ export function Navigation() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image src="/logo.png" alt="Logo" width={60} height={20}/>
+            <Link href="/" className="flex items-center space-x-2" aria-label={`${profile.name} — home`}>
+              <Image src="/logo.png" alt={`${profile.name} logo`} width={60} height={20} priority />
             </Link>
 
             <div className="hidden md:flex items-center space-x-8">

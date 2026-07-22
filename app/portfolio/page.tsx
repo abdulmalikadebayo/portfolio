@@ -7,10 +7,11 @@ import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
 import { work, workCategories, WorkCard, type WorkCategory } from "@/components/work-card"
 import { FadeIn, SlideInLeft, StaggerIn } from "@/components/animations/reveal-animations"
+import { profile } from "@/lib/data"
 
-const GITHUB_URL = "https://github.com/abdulmalikadebayo"
-const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
-const EMAIL = "abdulmalikadebayo1@gmail.com"
+const GITHUB_URL = profile.github
+const LINKEDIN_URL = profile.linkedin
+const EMAIL = profile.email
 
 const stats = [
   { value: `${work.length}`, label: "Products shipped" },
@@ -189,7 +190,7 @@ export default function PortfolioPage() {
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-              Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+              AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
             </p>
           </div>
           <div>

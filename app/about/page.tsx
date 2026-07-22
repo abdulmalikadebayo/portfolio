@@ -2,17 +2,19 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight, FileText, Github, Linkedin, Mail, GraduationCap, Award } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
-import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
+import { ImageCarousel } from "@/components/image-carousel"
 import { HighlightRow, type HighlightItem } from "@/components/highlight-row"
 import { TechStack } from "@/components/tech-stack"
 import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
+import { profile, speakingImages } from "@/lib/data"
 
-const GITHUB_URL = "https://github.com/abdulmalikadebayo"
-const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
-const EMAIL = "abdulmalikadebayo1@gmail.com"
+const GITHUB_URL = profile.github
+const LINKEDIN_URL = profile.linkedin
+const EMAIL = profile.email
 
 const education = {
   school: "Bowen University",
@@ -93,30 +95,6 @@ const featured: HighlightItem[] = [
   },
 ]
 
-const speakingImages: CarouselImage[] = [
-  {
-    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782981329/_80A8658_Original_x4gywk.jpg",
-    alt: "Speaking at Google DevFest, Ibadan",
-    caption: "Google DevFest, Ibadan",
-    fit: "contain",
-  },
-  {
-    src: "https://res.cloudinary.com/x78tb87x/image/upload/f_auto,q_auto:good,c_limit,w_1920/v1782980810/IMG_2766_x8id0d.jpg",
-    alt: "Speaking at Google DevFest, Ibadan",
-    caption: "Google DevFest, Ibadan",
-  },
-  {
-    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196080/IMG_0711_cbcnks.jpg",
-    alt: "Speaking at Bowen Tech Week",
-    caption: "Bowen Tech Week",
-  },
-  {
-    src: "https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756196078/IMG_0713_zfi7bj.jpg",
-    alt: "Speaking at Bowen Tech Week",
-    caption: "Bowen Tech Week",
-  },
-]
-
 export default function AboutPage() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const openContact = () => setIsContactModalOpen(true)
@@ -140,7 +118,7 @@ export default function AboutPage() {
                 <span className="text-primary italic">behind the work.</span>
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-slate-400">
-                I'm Adebayo, a Senior AI &amp; Backend Engineer from Lagos, building production LLM systems and scalable
+                I'm Adebayo, an AI &amp; Backend Engineer from Lagos, building production LLM systems and scalable
                 backends for teams across four continents, from research all the way to reliable deployment.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -167,9 +145,12 @@ export default function AboutPage() {
             <SlideInLeft>
               <div className="relative">
                 <div className="absolute inset-0 rounded-3xl bg-primary/10 blur-2xl" />
-                <img
+                <Image
                   src="https://res.cloudinary.com/dlgzlrzfh/image/upload/v1756197152/OBD_1848_cvlyxt.jpg"
                   alt="Adebayo Abdul-Malik"
+                  width={640}
+                  height={416}
+                  sizes="(min-width: 1024px) 512px, 100vw"
                   className="relative h-[26rem] w-full rounded-3xl border border-slate-200 object-cover shadow-lg"
                 />
               </div>
@@ -233,11 +214,11 @@ export default function AboutPage() {
                 </div>
                 <dl className="mt-6 grid gap-6 border-t border-slate-200 pt-6 sm:grid-cols-2">
                   <div>
-                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-400">Thesis</dt>
+                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-500">Thesis</dt>
                     <dd className="mt-1 text-sm text-slate-600">{education.thesis}</dd>
                   </div>
                   <div>
-                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-400">Honors &amp; awards</dt>
+                    <dt className="text-xs font-bold uppercase tracking-widest text-slate-500">Honors &amp; awards</dt>
                     <dd className="mt-2 flex items-start gap-2.5">
                       <Award className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                       <span className="min-w-0">
@@ -341,7 +322,7 @@ export default function AboutPage() {
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-              Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+              AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
             </p>
           </div>
           <div>

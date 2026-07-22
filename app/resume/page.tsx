@@ -6,147 +6,18 @@ import { ArrowRight, Download, ExternalLink, Github, Linkedin, Mail } from "luci
 import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
 import { TechStack } from "@/components/tech-stack"
-import { CareerTimeline, type Job } from "@/components/career-timeline"
+import { CareerTimeline } from "@/components/career-timeline"
 import { Magnetic } from "@/components/magnetic"
 import { FadeIn, LineReveal } from "@/components/animations/reveal-animations"
+import { profile, experience } from "@/lib/data"
 
-const GITHUB_URL = "https://github.com/abdulmalikadebayo"
-const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
-const EMAIL = "abdulmalikadebayo1@gmail.com"
+const GITHUB_URL = profile.github
+const LINKEDIN_URL = profile.linkedin
+const EMAIL = profile.email
 
 // Swap this file in public/ to refresh the downloadable CV. Keep the same filename so the link stays valid.
 const CV_PDF = "/Adebayo_Abdul-Malik.pdf"
 const CV_FILENAME = "Adebayo_Abdul-Malik_CV.pdf"
-
-const experience: Job[] = [
-  {
-    company: "Supernomics",
-    logo: "/supernomics-logo.svg",
-    logoType: "wordmark",
-    location: "San Francisco, US · Remote",
-    employment: "Contract",
-    period: "Jan 2026 – Present",
-    roles: [
-      {
-        title: "Senior AI Engineer (LLM & Applied ML)",
-        period: "Jan 2026 – Present",
-        bullets: [
-          "Built an LLM safety pipeline on Anthropic's Claude API with custom prompt-injection detection and content filtering, reducing harmful outputs at low latency.",
-          "Modernised Electron.js desktop infrastructure for AI features: refactoring, activity tracking for ML training data, and standards for embedding LLM capabilities.",
-        ],
-      },
-    ],
-    tags: ["Claude API", "LLM Safety", "Prompt Injection", "Content Filtering", "Electron.js", "Python"],
-  },
-  {
-    company: "Axiomfuse",
-    logo: "/axiomfuse-logo.png",
-    location: "London, UK · Remote",
-    employment: "Full-time",
-    period: "Nov 2025 – Present",
-    roles: [
-      {
-        title: "Software Engineer (AI & Backend)",
-        period: "Nov 2025 – Present",
-        bullets: [
-          "Core of a two-person backend and blockchain team building DeFi wallet infrastructure (Aave, Morpho, Kamino, Jito) with real-time WebSocket position tracking across Ethereum and Solana, serving 5,000+ users.",
-          "Delivered backend and AI for a UK NHS healthcare-staffing platform: intelligent job matching, a real-time staffing insights dashboard and scheduling, connecting 1,400+ medical professionals to 4,900+ filled jobs.",
-          "Built an adaptive personality assessment platform using GPT-4o with confidence-based trait scoring across 35 attributes and intelligent, gap-driven question selection.",
-        ],
-      },
-    ],
-    tags: [
-      "Django",
-      "PostgreSQL",
-      "Ethereum",
-      "Solana",
-      "WebSockets",
-      "Celery",
-      "Redis",
-      "GPT-4o",
-      "React",
-      "AWS",
-      "Docker",
-      "GitHub Actions",
-    ],
-  },
-  {
-    company: "BRDGE",
-    logo: "/brdge-logo.png",
-    location: "London, UK · Remote",
-    employment: "Full-time",
-    period: "Jun 2024 – Nov 2025",
-    roles: [
-      {
-        title: "AI Development Analyst",
-        period: "Feb 2025 – Nov 2025",
-        bullets: [
-          "Led an end-to-end Arabic-English legal chatbot using Llama 3 and Legal GPT via AWS Bedrock, handling 200+ queries a day for a Saudi client with strict data-sovereignty needs.",
-          "Delivered custom AI implementations for clients across Europe (Ireland, UK), Asia (China, Malaysia) and Africa (Nigeria).",
-          "Aligned deployments with client and stakeholder goals around compliance, governance and real-time decision intelligence.",
-        ],
-      },
-      {
-        title: "AI Researcher & Engineer",
-        period: "Jun 2024 – Feb 2025",
-        bullets: [
-          "Built the complete backend and API layer for Apprentago, an apprenticeship platform with 22,000+ users and 10,000+ job listings, through to live deployment.",
-          "Developed LLM assistants using RAG pipelines and fine-tuned models, containerised with Docker for scalable deployment.",
-          "Deployed on AWS and GCP with CI/CD via GitHub Actions, maintaining security and NDA compliance across confidential client projects.",
-        ],
-      },
-    ],
-    tags: [
-      "Django",
-      "RAG",
-      "Llama 3",
-      "AWS Bedrock",
-      "LlamaIndex",
-      "FAISS",
-      "OpenAI",
-      "Whisper",
-      "React",
-      "PostgreSQL",
-      "GCP",
-      "Docker",
-      "GitHub Actions",
-    ],
-  },
-  {
-    company: "Synergy Solutions",
-    location: "Remote",
-    period: "Sep 2023 – Oct 2023",
-    roles: [
-      {
-        title: "Data Scientist",
-        period: "Sep 2023 – Oct 2023",
-        bullets: [
-          "Led technical initiatives at a growing marketing agency, introducing AI-powered tools to support campaign creation, automate routine tasks and boost client engagement.",
-          "Developed custom internal systems for AI-generated captions, ad copy and campaign briefs, helping non-technical staff create content faster.",
-          "Worked closely with non-technical staff to make AI accessible and practical, reducing content turnaround time and scaling output without adding headcount.",
-        ],
-      },
-    ],
-    tags: ["Python", "NLP"],
-  },
-  {
-    company: "KPMG",
-    logo: "/kpmg-logo.svg",
-    logoType: "wordmark",
-    location: "Remote",
-    period: "Sep 2020 – Oct 2020",
-    roles: [
-      {
-        title: "Data Analyst Intern",
-        period: "Sep 2020 – Oct 2020",
-        bullets: [
-          "Completed the Data Quality Assessment, Data Insights and Presentation tasks as part of the KPMG virtual internship.",
-        ],
-      },
-    ],
-    tags: [],
-  },
-]
 
 export default function ResumePage() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
@@ -275,7 +146,7 @@ export default function ResumePage() {
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-              Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+              AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
             </p>
           </div>
           <div>

@@ -136,15 +136,17 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Added custom font variables for Geist and Manrope */
-  --font-sans: var(--font-geist);
-  --font-serif: var(--font-manrope);
+  /* Site now ships two families: Inter (sans/body) + Jakarta (display).
+     Legacy vars are aliased onto them so old font-sans/font-serif/font-code
+     usages keep working without loading extra fonts. */
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-jakarta);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Home redesign fonts (Plus Jakarta Sans / Inter / JetBrains Mono) + teal accent */
+  /* Home redesign fonts + teal accent */
   --font-display: var(--font-jakarta);
   --font-body: var(--font-inter);
-  --font-code: var(--font-jetbrains);
+  --font-code: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --color-accent-teal: var(--accent-teal);
 }
 

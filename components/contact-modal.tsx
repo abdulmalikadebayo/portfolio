@@ -4,14 +4,15 @@ import type React from "react"
 
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Mail, Send, CheckCircle, AlertCircle, User, MessageSquare, Phone, MapPin, Globe } from "lucide-react"
+import { Mail, Send, CheckCircle, AlertCircle, User, MessageSquare, MapPin, Globe } from "lucide-react"
+import { profile } from "@/lib/data"
 
 interface ContactModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-const EMAIL = "abdulmalikadebayo1@gmail.com"
+const EMAIL = profile.email
 
 export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [formData, setFormData] = useState({
@@ -19,9 +20,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     email: "",
     subject: "",
     message: "",
+    company: "", // honeypot; must stay empty for real users
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -32,24 +35,30 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     e.preventDefault()
     setIsSubmitting(true)
     setSubmitStatus("idle")
+    setErrorMessage("")
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json().catch(() => ({}))
 
-      const subject = encodeURIComponent(formData.subject || "Portfolio Contact")
-      const body = encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
-      )
-      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`
+      if (!res.ok || !data?.ok) {
+        setErrorMessage(data?.error || "Something went wrong. Please try again or email me directly.")
+        setSubmitStatus("error")
+        return
+      }
 
       setSubmitStatus("success")
-
       setTimeout(() => {
-        setFormData({ name: "", email: "", subject: "", message: "" })
+        setFormData({ name: "", email: "", subject: "", message: "", company: "" })
         setSubmitStatus("idle")
         onClose()
-      }, 2000)
-    } catch (error) {
+      }, 2500)
+    } catch {
+      setErrorMessage("Network error. Please try again or email me directly.")
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
@@ -86,8 +95,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const contactRows = [
     { icon: Mail, value: EMAIL },
-    { icon: Phone, value: "+2348036561316" },
-    { icon: MapPin, value: "Lagos, Nigeria" },
+    { icon: MapPin, value: profile.location },
     { icon: Globe, value: "Available for remote work" },
   ]
 
@@ -146,6 +154,17 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Honeypot: hidden from users, catches bots. */}
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
+              onChange={handleInputChange}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+            />
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <label htmlFor="name" className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
@@ -216,14 +235,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             {submitStatus === "success" && (
               <div className="flex items-center gap-2 rounded-xl bg-primary/10 p-3 text-sm text-primary">
                 <CheckCircle className="h-5 w-5 shrink-0" />
-                <span>Message ready. Your email client should open shortly.</span>
+                <span>Message sent. Check your inbox for a confirmation, I'll be in touch soon.</span>
               </div>
             )}
 
             {submitStatus === "error" && (
               <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 text-sm text-red-600">
                 <AlertCircle className="h-5 w-5 shrink-0" />
-                <span>Something went wrong. Please try again or email me directly.</span>
+                <span>{errorMessage || "Something went wrong. Please try again or email me directly."}</span>
               </div>
             )}
 

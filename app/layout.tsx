@@ -1,22 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Manrope, Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google"
+import { Plus_Jakarta_Sans, Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { profile, siteUrl } from "@/lib/data"
 
-const geist = Geist({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-geist",
-})
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-manrope",
-})
-
-// Fonts for the redesigned home page
+// Two families cover the whole site: Jakarta for display/headings, Inter for
+// body + base sans. (Was 5 families; Geist/Manrope/JetBrains added blocking
+// font downloads for near-zero usage.)
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
@@ -29,16 +20,65 @@ const inter = Inter({
   variable: "--font-inter",
 })
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jetbrains",
-})
+const description =
+  "Adebayo Abdul-Malik is an AI & Backend Engineer building production LLM systems, RAG pipelines, agentic workflows and scalable backends for clients across the US, Europe, Asia, the Gulf and Africa."
 
 export const metadata: Metadata = {
-  title: "Adebayo Abdul-Malik - AI Researcher & Backend Engineer",
-  description:
-    "AI Researcher and Backend Engineer specializing in machine learning, natural language processing, and scalable backend systems."
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${profile.name} — ${profile.title}`,
+    template: `%s — ${profile.name}`,
+  },
+  description,
+  applicationName: `${profile.name} — Portfolio`,
+  authors: [{ name: profile.name, url: siteUrl }],
+  creator: profile.name,
+  keywords: [
+    profile.name,
+    "AI Engineer",
+    "Backend Engineer",
+    "LLM",
+    "RAG",
+    "Agentic AI",
+    "Machine Learning",
+    "Django",
+    "Python",
+    "AWS",
+    "Lagos",
+    "Nigeria",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: `${profile.name} — Portfolio`,
+    title: `${profile.name} — ${profile.title}`,
+    description,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${profile.name} — ${profile.title}`,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  category: "technology",
+}
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: profile.title,
+  url: siteUrl,
+  email: `mailto:${profile.email}`,
+  image: profile.headshot,
+  address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
+  sameAs: [profile.github, profile.linkedin],
 }
 
 export default function RootLayout({
@@ -50,9 +90,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geist.variable} ${manrope.variable} ${jakarta.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
+      className={`${jakarta.variable} ${inter.variable} antialiased`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
         </ThemeProvider>
