@@ -7,61 +7,12 @@ import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
 import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
 import { HighlightRow, type HighlightItem } from "@/components/highlight-row"
+import { TechStack } from "@/components/tech-stack"
 import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
 
 const GITHUB_URL = "https://github.com/abdulmalikadebayo"
 const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
 const EMAIL = "abdulmalikadebayo1@gmail.com"
-
-interface Tech {
-  name: string
-  logo: string
-}
-
-const techGroups: { label: string; items: Tech[] }[] = [
-  {
-    label: "Languages & Frameworks",
-    items: [
-      { name: "Python", logo: "/tech/python.svg" },
-      { name: "Django", logo: "/tech/django.svg" },
-      { name: "Flask", logo: "/tech/flask.svg" },
-      { name: "FastAPI", logo: "/tech/fastapi.svg" },
-      { name: "JavaScript", logo: "/tech/javascript.svg" },
-      { name: "Electron", logo: "/tech/electron.svg" },
-    ],
-  },
-  {
-    label: "Databases",
-    items: [
-      { name: "PostgreSQL", logo: "/tech/postgresql.svg" },
-      { name: "MySQL", logo: "/tech/mysql.svg" },
-      { name: "MongoDB", logo: "/tech/mongodb.svg" },
-      { name: "Redis", logo: "/tech/redis.svg" },
-    ],
-  },
-  {
-    label: "AI & ML",
-    items: [
-      { name: "OpenAI", logo: "/tech/openai.svg" },
-      { name: "Claude", logo: "/tech/claude.svg" },
-      { name: "Llama", logo: "/tech/meta.svg" },
-      { name: "LangChain", logo: "/tech/langchain.svg" },
-      { name: "LangGraph", logo: "/tech/langgraph.png" },
-      { name: "Hugging Face", logo: "/tech/huggingface.svg" },
-      { name: "PyTorch", logo: "/tech/pytorch.svg" },
-    ],
-  },
-  {
-    label: "Cloud & DevOps",
-    items: [
-      { name: "Docker", logo: "/tech/docker.svg" },
-      { name: "Git", logo: "/tech/git.svg" },
-      { name: "AWS", logo: "/tech/amazonwebservices.svg" },
-      { name: "Google Cloud", logo: "/tech/googlecloud.svg" },
-      { name: "Celery", logo: "/tech/celery.svg" },
-    ],
-  },
-]
 
 const education = {
   school: "Bowen University",
@@ -166,33 +117,6 @@ const speakingImages: CarouselImage[] = [
   },
 ]
 
-function TechTile({ tech }: { tech: Tech }) {
-  const [error, setError] = useState(false)
-  return (
-    <div
-      className="flex flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 text-center transition-shadow hover:shadow-md"
-      title={tech.name}
-    >
-      <span className="flex h-9 w-9 items-center justify-center md:h-11 md:w-11">
-        {error ? (
-          <span className="flex h-full w-full items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
-            {tech.name.slice(0, 2)}
-          </span>
-        ) : (
-          <img
-            src={tech.logo}
-            alt={tech.name}
-            loading="lazy"
-            className="h-full w-full object-contain"
-            onError={() => setError(true)}
-          />
-        )}
-      </span>
-      <span className="text-[11px] font-medium leading-tight text-slate-600">{tech.name}</span>
-    </div>
-  )
-}
-
 export default function AboutPage() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const openContact = () => setIsContactModalOpen(true)
@@ -279,18 +203,7 @@ export default function AboutPage() {
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Toolkit</p>
               <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">The tools I build with.</h2>
             </FadeIn>
-            <StaggerIn staggerDelay={0.1} className="grid gap-6 lg:grid-cols-2">
-              {techGroups.map((group) => (
-                <div key={group.label} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8">
-                  <p className="mb-5 text-sm font-bold text-slate-900">{group.label}</p>
-                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
-                    {group.items.map((tech) => (
-                      <TechTile key={tech.name} tech={tech} />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </StaggerIn>
+            <TechStack />
           </div>
         </section>
 

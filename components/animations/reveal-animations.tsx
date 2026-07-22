@@ -3,11 +3,15 @@
 import { useEffect, useRef, type ReactNode } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { SplitText } from "gsap/SplitText"
 
-// Register ScrollTrigger plugin
+// Register plugins
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger, SplitText)
 }
+
+const reduced = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 interface AnimationProps {
   children: ReactNode
@@ -232,6 +236,38 @@ export function HeroTextAnimation({ children, className = "" }: { children: Reac
 
   return (
     <div ref={elementRef} className={className}>
+      {children}
+    </div>
+  )
+}
+
+// Line-by-line mask/3D reveal for headings (SplitText). Reduced-motion renders plain text.
+export function LineReveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || reduced()) return
+    const ctx = gsap.context(() => {
+      gsap.set(el, { perspective: 700 })
+      const split = new SplitText(el, { type: "lines", linesClass: "aa-reveal-line" })
+      gsap.from(split.lines, {
+        yPercent: 120,
+        opacity: 0,
+        rotateX: -55,
+        transformOrigin: "top center",
+        duration: 0.95,
+        ease: "power3.out",
+        stagger: 0.12,
+        delay,
+        scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none reverse" },
+      })
+    }, el)
+    return () => ctx.revert()
+  }, [delay])
+
+  return (
+    <div ref={ref} className={`[&_.aa-reveal-line]:overflow-hidden ${className}`}>
       {children}
     </div>
   )

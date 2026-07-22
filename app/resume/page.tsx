@@ -1,396 +1,270 @@
 "use client"
 
+import { useState } from "react"
+import Link from "next/link"
+import { Download, ExternalLink, Github, Linkedin, Mail } from "lucide-react"
 import { Navigation } from "@/components/navigation"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Download,
-  Printer as Print,
-  MapPin,
-  Phone,
-  Mail,
-  Github,
-  Linkedin,
-  GraduationCap,
-  Briefcase,
-  Award,
-  Code,
-  ExternalLink,
-} from "lucide-react"
+import { ContactModal } from "@/components/contact-modal"
+import { TechStack } from "@/components/tech-stack"
+import { CareerTimeline, type Job } from "@/components/career-timeline"
+import { Magnetic } from "@/components/magnetic"
+import { CustomCursor } from "@/components/custom-cursor"
+import { ScrollProgress } from "@/components/scroll-progress"
+import { GridBackdrop } from "@/components/grid-backdrop"
+import { FadeIn, LineReveal } from "@/components/animations/reveal-animations"
+
+const GITHUB_URL = "https://github.com/abdulmalikadebayo"
+const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/"
+const EMAIL = "abdulmalikadebayo1@gmail.com"
+
+// Swap this file in public/ to refresh the downloadable CV. Keep the same filename so the link stays valid.
+const CV_PDF = "/Adebayo_Abdul-Malik.pdf"
+const CV_FILENAME = "Adebayo_Abdul-Malik_CV.pdf"
+
+const experience: Job[] = [
+  {
+    company: "Supernomics",
+    logo: "/supernomics-logo.svg",
+    logoType: "wordmark",
+    location: "San Francisco, US · Remote",
+    employment: "Contract",
+    period: "Jan 2026 – Present",
+    roles: [
+      {
+        title: "Senior AI Engineer (LLM & Applied ML)",
+        period: "Jan 2026 – Present",
+        bullets: [
+          "Built an LLM safety pipeline on Anthropic's Claude API with custom prompt-injection detection and content filtering, reducing harmful outputs at low latency.",
+          "Modernised Electron.js desktop infrastructure for AI features: refactoring, activity tracking for ML training data, and standards for embedding LLM capabilities.",
+        ],
+      },
+    ],
+    tags: ["Claude API", "LLM Safety", "Electron.js"],
+  },
+  {
+    company: "Axiomfuse",
+    logo: "/axiomfuse-logo.png",
+    location: "London, UK · Remote",
+    employment: "Full-time",
+    period: "Nov 2025 – Present",
+    roles: [
+      {
+        title: "Software Engineer (AI & Backend)",
+        period: "Nov 2025 – Present",
+        bullets: [
+          "Core of a two-person backend and blockchain team building DeFi wallet infrastructure (Aave, Morpho, Kamino, Jito) with real-time WebSocket position tracking across Ethereum and Solana, serving 5,000+ users.",
+          "Delivered backend and AI for a UK NHS healthcare-staffing platform: intelligent job matching, a real-time staffing insights dashboard and scheduling, connecting 1,400+ medical professionals to 4,900+ filled jobs.",
+          "Built an adaptive personality assessment platform using GPT-4o with confidence-based trait scoring across 35 attributes and intelligent, gap-driven question selection.",
+        ],
+      },
+    ],
+    tags: ["Solana", "Ethereum", "GPT-4o", "WebSockets"],
+  },
+  {
+    company: "BRDGE",
+    logo: "/brdge-logo.png",
+    location: "London, UK · Remote",
+    employment: "Full-time",
+    period: "Jun 2024 – Nov 2025",
+    roles: [
+      {
+        title: "AI Development Analyst",
+        period: "Feb 2025 – Nov 2025",
+        bullets: [
+          "Led an end-to-end Arabic-English legal chatbot using Llama 3 and Legal GPT via AWS Bedrock, handling 200+ queries a day for a Saudi client with strict data-sovereignty needs.",
+          "Delivered custom AI implementations for clients across Europe (Ireland, UK), Asia (China, Malaysia) and Africa (Nigeria).",
+          "Aligned deployments with client and stakeholder goals around compliance, governance and real-time decision intelligence.",
+        ],
+      },
+      {
+        title: "AI Researcher & Engineer",
+        period: "Jun 2024 – Feb 2025",
+        bullets: [
+          "Built the complete backend and API layer for Apprentago, an apprenticeship platform with 22,000+ users and 10,000+ job listings, through to live deployment.",
+          "Developed LLM assistants using RAG pipelines and fine-tuned models, containerised with Docker for scalable deployment.",
+          "Deployed on AWS and GCP with CI/CD via GitHub Actions, maintaining security and NDA compliance across confidential client projects.",
+        ],
+      },
+    ],
+    tags: ["Llama 3", "AWS Bedrock", "RAG", "Django"],
+  },
+  {
+    company: "Synergy Solutions",
+    location: "Remote",
+    period: "Sep 2023 – Oct 2023",
+    roles: [
+      {
+        title: "Data Scientist",
+        period: "Sep 2023 – Oct 2023",
+        bullets: [
+          "Led technical initiatives at a growing marketing agency, introducing AI-powered tools to support campaign creation, automate routine tasks and boost client engagement.",
+          "Developed custom internal systems for AI-generated captions, ad copy and campaign briefs, helping non-technical staff create content faster.",
+          "Worked closely with non-technical staff to make AI accessible and practical, reducing content turnaround time and scaling output without adding headcount.",
+        ],
+      },
+    ],
+    tags: ["Python", "NLP"],
+  },
+  {
+    company: "KPMG",
+    logo: "/kpmg-logo.svg",
+    logoType: "wordmark",
+    location: "Remote",
+    period: "Sep 2020 – Oct 2020",
+    roles: [
+      {
+        title: "Data Analyst Intern",
+        period: "Sep 2020 – Oct 2020",
+        bullets: [
+          "Completed the Data Quality Assessment, Data Insights and Presentation tasks as part of the KPMG virtual internship.",
+        ],
+      },
+    ],
+    tags: [],
+  },
+]
 
 export default function ResumePage() {
-  const handleDownload = () => {
-    const link = document.createElement('a')
-    link.href = '/Adebayo_Abdul-Malik.pdf'
-    link.download = 'Adebayo_Abdul-Malik.pdf'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
-  const techStack = [
-    "Python",
-    "JavaScript",
-    "Node.js",
-    "TensorFlow",
-    "PyTorch",
-    "Docker",
-    "AWS",
-    "GCP",
-    "PostgreSQL",
-    "Redis",
-    "Git",
-    "Linux",
-    "API Development",
-    "Machine Learning",
-    "NLP",
-    "Computer Vision",
-    "Backend Architecture",
-  ]
-
-  const workExperience = [
-    {
-      company: "BRDGE",
-      location: "London, United Kingdom (Remote)",
-      positions: [
-        {
-          title: "AI Development Analyst",
-          period: "February 2025 – Present",
-          responsibilities: [
-            "Led the end-to-end development of a multilingual AI chatbot for a Saudi-based client, integrating an open-source model with Legal GPT to handle English and Arabic legal queries.",
-            "Delivered custom AI implementations for global clients across Europe (Ireland, UK), Asia (China, Malaysia), and Africa (Nigeria).",
-            "Collaborated directly with clients and stakeholders to align AI deployments with business goals, emphasizing compliance, governance, and real-time decision intelligence.",
-          ],
-        },
-        {
-          title: "AI Researcher and Engineer",
-          period: "June 2024 – February 2025",
-          responsibilities: [
-            "Designed and developed the entire backend architecture and API endpoints for Apprentago, a large-scale apprenticeship platform with 10,000+ active users and job listings, combined, ensuring scalability, efficiency, and a successful live deployment.",
-            "Developed LLM-powered AI assistants using Retrieval-Augmented Generation (RAG) pipelines and fine-tuned models, deploying APIs and containerizing them with Docker for scalable deployment.",
-            "Deployed services using AWS and GCP, implemented CI/CD pipelines via GitHub Actions, and maintained security and NDA compliance while delivering confidential client projects.",
-          ],
-        },
-      ],
-    },
-    {
-      company: "SYNERGY SOLUTIONS IMC LIMITED",
-      location: "Remote",
-      positions: [
-        {
-          title: "Data Scientist",
-          period: "September 2023 – October 2023",
-          responsibilities: [
-            "Lead all technical initiatives at a growing marketing agency, introducing AI-powered tools to support campaign creation, automate routine tasks, and boost client engagement.",
-            "Developed custom internal systems for AI-generated captions, ad copy, and campaign briefs, helping non-technical staff create compelling content faster.",
-            "Worked closely with non-technical staff to make AI accessible and practical, reducing content turnaround time and scaling marketing output without increasing headcount.",
-          ],
-        },
-      ],
-    },
-    {
-      company: "KPMG",
-      location: "Remote",
-      positions: [
-        {
-          title: "Data Analyst Intern",
-          period: "September 2020 – October 2020",
-          responsibilities: [
-            "Completed the Data Quality Assessment, Data Insights and Presentation task as part of the KPMG virtual internship",
-          ],
-        },
-      ],
-    },
-  ]
-
-  const projects = [
-    {
-      title: "AI-Powered News Summarization Tool",
-      description:
-        "Developed an AI-powered news summarization tool using Python, Natural Language Processing (NLP), and Machine Learning (ML) techniques.",
-      details: [
-        "Implemented advanced algorithms to extract key information from news articles, generating concise and coherent summaries.",
-        "Integrated the tool with a web interface for easy access and usability.",
-        "Improved news consumption efficiency by providing users with quick and informative summaries.",
-      ],
-      technologies: ["Python", "NLP", "Machine Learning", "Web Interface"],
-    },
-    {
-      title: "AI-Powered Plagiarism Checker",
-      description:
-        "Developed an AI-powered plagiarism checker using Python, Natural Language Processing (NLP), and Machine Learning (ML) techniques.",
-      details: [
-        "Implemented advanced algorithms to detect plagiarism in text documents, providing accurate and reliable results.",
-        "Integrated the tool with a web interface for easy access and usability.",
-        "Improved academic integrity by providing students and educators with a tool to detect and prevent plagiarism.",
-      ],
-      technologies: ["Python", "NLP", "Machine Learning", "Text Analysis"],
-    },
-  ]
-
-  const awards = [
-    {
-      title: "Student Icon 360",
-      organization: "Bowen University",
-      year: "2024",
-      description: "Awarded to outstanding students excelling in academics, leadership, and Community Impact",
-    },
-    {
-      title: "MTN Foundation Science and Technology Scholarship",
-      organization: "MTN Foundation",
-      year: "2023",
-      description: "Scholarship recipient for excellence in Science and Technology",
-    },
-    {
-      title: "Most Outstanding Student in Computer Science",
-      organization: "Bowen University",
-      year: "2022",
-      description: "Recognition for academic excellence in Computer Science",
-    },
-  ]
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const openContact = () => setIsContactModalOpen(true)
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
-      <main className="pt-16">
-        <section className="py-12 bg-gradient-to-br from-background via-muted/30 to-primary/5 print:bg-white print:py-8">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-4xl lg:text-5xl font-bold font-serif text-primary print:text-black">Resume</h1>
-                  <p className="text-lg text-muted-foreground print:text-gray-600">
-                    Learn more about my skills, qualifications and experiences.
-                  </p>
-                </div>
-              </div>
+    <div className="home-redesign font-body relative min-h-screen overflow-hidden bg-[#0a0a0a] text-white">
+      <CustomCursor />
+      <ScrollProgress />
 
-              <div className="flex gap-4 print:hidden">
-                <Button onClick={handleDownload} size="lg" className="!cursor-pointer">
-                  <Download className="mr-2 h-4 w-4" />
-                  Download PDF
-                </Button>
+      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
+        <GridBackdrop />
+      </div>
+
+      <div className="relative z-10">
+        <Navigation />
+
+        <main className="pt-20">
+          {/* 1. HERO */}
+          <section className="relative px-6 py-28 md:py-36">
+            <div className="mx-auto max-w-4xl space-y-8">
+              <p className="flex items-center gap-3 font-code text-sm font-bold uppercase tracking-widest text-accent-teal">
+                <span className="h-px w-8 bg-accent-teal" /> Resume
+              </p>
+              <LineReveal>
+                <h1 className="font-display text-6xl font-extrabold leading-[1.02] md:text-8xl">
+                  The full <span className="text-primary italic">career history.</span>
+                </h1>
+              </LineReveal>
+              <p className="text-lg font-medium text-slate-300">Senior AI &amp; Backend Engineer · Lagos, Nigeria</p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Magnetic>
+                  <a
+                    href={CV_PDF}
+                    download={CV_FILENAME}
+                    className="flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                  >
+                    <Download className="h-4 w-4" /> Download PDF
+                  </a>
+                </Magnetic>
+                <Magnetic>
+                  <a
+                    href={CV_PDF}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-semibold transition-colors hover:border-white/60"
+                  >
+                    Open in new tab <ExternalLink className="h-4 w-4" />
+                  </a>
+                </Magnetic>
               </div>
+              <FadeIn className="pt-10">
+                <span className="font-code text-[10px] uppercase tracking-[0.3em] text-slate-500">
+                  Scroll to explore
+                </span>
+              </FadeIn>
+            </div>
+          </section>
+
+          {/* 2. EXPERIENCE */}
+          <section className="relative px-6 py-24">
+            <div className="mx-auto max-w-5xl">
+              <p className="mb-4 font-code text-sm font-bold uppercase tracking-widest text-accent-teal">Experience</p>
+              <LineReveal>
+                <h2 className="mb-14 font-display text-4xl font-bold md:text-6xl">Roles &amp; impact.</h2>
+              </LineReveal>
+              <CareerTimeline experience={experience} />
+            </div>
+          </section>
+
+          {/* 3. SKILLS */}
+          <section className="relative px-6 py-24">
+            <div className="mx-auto max-w-5xl">
+              <p className="mb-4 font-code text-sm font-bold uppercase tracking-widest text-accent-teal">Skills</p>
+              <LineReveal>
+                <h2 className="mb-14 font-display text-4xl font-bold md:text-6xl">Tools I work with.</h2>
+              </LineReveal>
+              <TechStack variant="dark" />
+              <FadeIn>
+                <p className="mt-12 text-sm text-slate-400">
+                  Education, talks and community work live on the{" "}
+                  <Link href="/about" className="font-semibold text-primary hover:underline">
+                    About page
+                  </Link>
+                  . Prefer a conversation?{" "}
+                  <button onClick={openContact} className="font-semibold text-primary hover:underline">
+                    Get in touch
+                  </button>
+                  .
+                </p>
+              </FadeIn>
+            </div>
+          </section>
+        </main>
+
+        {/* 4. FOOTER */}
+        <footer className="border-t border-white/10 px-6 py-16">
+          <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
+            <div>
+              <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
+                Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+              </p>
+            </div>
+            <div>
+              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Explore</p>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li><Link href="/" className="hover:text-primary">Home</Link></li>
+                <li><Link href="/about" className="hover:text-primary">About</Link></li>
+                <li><Link href="/resume" className="hover:text-primary">Resume</Link></li>
+                <li><Link href="/portfolio" className="hover:text-primary">Portfolio</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Connect</p>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li>
+                  <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 hover:text-primary">
+                    <Mail className="h-4 w-4" /> Email
+                  </a>
+                </li>
+                <li>
+                  <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                    <Linkedin className="h-4 w-4" /> LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                    <Github className="h-4 w-4" /> GitHub
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
-
-        {/* Resume Content */}
-        <section className="py-12 print:py-8">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 print:px-8">
-            {/* Personal Information */}
-            <Card className="p-8 mb-8 print:shadow-none print:border-2 print:border-gray-300">
-              <div className="text-center space-y-4">
-                <h2 className="text-3xl font-bold font-serif">Adebayo Abdul-Malik</h2>
-                <p className="text-xl text-primary font-medium print:text-black">AI Researcher & Backend Engineer</p>
-
-                <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground print:text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    <span>Lagos, Nigeria</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <span>+2348036561316</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    <span>abdulmalikadebayo1@gmail.com</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Github className="h-4 w-4" />
-                    <span>github.com/AdebayoAbdulmalik</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Linkedin className="h-4 w-4" />
-                    <span>linkedin.com/in/adebayo-abdul-malik-</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* Education */}
-            <Card className="p-6 mb-8 print:shadow-none print:border print:border-gray-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center print:bg-gray-100">
-                  <GraduationCap className="h-5 w-5 text-primary print:text-black" />
-                </div>
-                <h3 className="text-2xl font-bold font-serif">Education</h3>
-              </div>
-
-              <div className="space-y-4">
-                <div className="border-l-2 border-primary/20 pl-6 print:border-gray-300">
-                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-                    <div>
-                      <h4 className="text-lg font-semibold">Bachelor of Science, Computer Science</h4>
-                      <p className="text-primary font-medium print:text-black">Bowen University</p>
-                      <p className="text-sm text-muted-foreground print:text-gray-600">Osun State, Nigeria</p>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant="secondary" className="print:bg-gray-100 print:text-black">
-                        2020-2024
-                      </Badge>
-                    </div>
-                  </div>
-                  <p className="mt-2 text-sm text-muted-foreground print:text-gray-600">
-                    <strong>Thesis:</strong> Development of a Nigerian Sign Language Recognition System
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Professional Experience */}
-            <Card className="p-6 mb-8 print:shadow-none print:border print:border-gray-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center print:bg-gray-100">
-                  <Briefcase className="h-5 w-5 text-primary print:text-black" />
-                </div>
-                <h3 className="text-2xl font-bold font-serif">Professional Experience</h3>
-              </div>
-
-              <div className="space-y-8">
-                {workExperience.map((company, companyIndex) => (
-                  <div key={companyIndex} className="border-l-2 border-primary/20 pl-6 print:border-gray-300">
-                    <div className="mb-4">
-                      <h4 className="text-lg font-semibold">{company.company}</h4>
-                      <p className="text-sm text-muted-foreground print:text-gray-600">{company.location}</p>
-                    </div>
-
-                    {company.positions.map((position, positionIndex) => (
-                      <div key={positionIndex} className="mb-6 last:mb-0">
-                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 mb-3">
-                          <h5 className="font-medium text-primary print:text-black">{position.title}</h5>
-                          <Badge variant="outline" className="w-fit print:border-gray-400">
-                            {position.period}
-                          </Badge>
-                        </div>
-                        <ul className="space-y-2 text-sm text-muted-foreground print:text-gray-700">
-                          {position.responsibilities.map((responsibility, respIndex) => (
-                            <li key={respIndex} className="flex gap-2">
-                              <span className="text-primary print:text-black">•</span>
-                              <span>{responsibility}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Tech Stack */}
-            <Card className="p-6 mb-8 print:shadow-none print:border print:border-gray-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center print:bg-gray-100">
-                  <Code className="h-5 w-5 text-primary print:text-black" />
-                </div>
-                <h3 className="text-2xl font-bold font-serif">Tech Stack</h3>
-                <p className="text-sm text-muted-foreground print:text-gray-600 ml-auto">TOOLS & TECHNOLOGIES</p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                {techStack.map((tech, index) => (
-                  <Badge key={index} variant="outline" className="print:border-gray-400">
-                    {tech}
-                  </Badge>
-                ))}
-              </div>
-            </Card>
-
-            {/* Projects */}
-            <Card className="p-6 mb-8 print:shadow-none print:border print:border-gray-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center print:bg-gray-100">
-                  <ExternalLink className="h-5 w-5 text-primary print:text-black" />
-                </div>
-                <h3 className="text-2xl font-bold font-serif">Projects</h3>
-              </div>
-
-              <div className="space-y-6">
-                {projects.map((project, index) => (
-                  <div key={index} className="border-l-2 border-primary/20 pl-6 print:border-gray-300">
-                    <h4 className="text-lg font-semibold mb-2">{project.title}</h4>
-                    <p className="text-sm text-muted-foreground mb-3 print:text-gray-600">{project.description}</p>
-                    <ul className="space-y-1 text-sm text-muted-foreground mb-3 print:text-gray-700">
-                      {project.details.map((detail, detailIndex) => (
-                        <li key={detailIndex} className="flex gap-2">
-                          <span className="text-primary print:text-black">•</span>
-                          <span>{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech, techIndex) => (
-                        <Badge
-                          key={techIndex}
-                          variant="secondary"
-                          className="text-xs print:bg-gray-100 print:text-black"
-                        >
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Awards */}
-            <Card className="p-6 print:shadow-none print:border print:border-gray-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center print:bg-gray-100">
-                  <Award className="h-5 w-5 text-primary print:text-black" />
-                </div>
-                <h3 className="text-2xl font-bold font-serif">Awards</h3>
-              </div>
-
-              <div className="space-y-4">
-                {awards.map((award, index) => (
-                  <div key={index} className="border-l-2 border-primary/20 pl-6 print:border-gray-300">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-                      <div>
-                        <h4 className="font-semibold">{award.title}</h4>
-                        <p className="text-sm text-primary print:text-black">{award.organization}</p>
-                        <p className="text-sm text-muted-foreground print:text-gray-600">{award.description}</p>
-                      </div>
-                      <Badge variant="secondary" className="w-fit print:bg-gray-100 print:text-black">
-                        {award.year}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
+          <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-slate-500 md:flex-row">
+            <span>© {new Date().getFullYear()} Adebayo Abdul-Malik.</span>
+            <span>Lagos, Nigeria</span>
           </div>
-        </section>
-      </main>
+        </footer>
+      </div>
 
-      {/* Print Styles */}
-      <style jsx global>{`
-        @media print {
-          body { 
-            font-size: 12px !important; 
-            line-height: 1.4 !important;
-            color: black !important;
-          }
-          .print\\:hidden { display: none !important; }
-          .print\\:bg-white { background-color: white !important; }
-          .print\\:bg-gray-100 { background-color: #f3f4f6 !important; }
-          .print\\:text-black { color: black !important; }
-          .print\\:text-gray-600 { color: #4b5563 !important; }
-          .print\\:text-gray-700 { color: #374151 !important; }
-          .print\\:border { border: 1px solid #d1d5db !important; }
-          .print\\:border-2 { border: 2px solid #d1d5db !important; }
-          .print\\:border-gray-300 { border-color: #d1d5db !important; }
-          .print\\:border-gray-400 { border-color: #9ca3af !important; }
-          .print\\:shadow-none { box-shadow: none !important; }
-          .print\\:px-8 { padding-left: 2rem !important; padding-right: 2rem !important; }
-          .print\\:py-8 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
-          * { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }
-        }
-      `}</style>
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
   )
 }

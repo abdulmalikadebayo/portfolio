@@ -4,7 +4,6 @@ import { useState } from "react"
 import Link from "next/link"
 import {
   ArrowRight,
-  ArrowUpRight,
   FileText,
   Github,
   Linkedin,
@@ -18,16 +17,13 @@ import {
   Mic,
   Building2,
   Award,
-  Scale,
-  Wallet,
-  Stethoscope,
-  ShieldCheck,
   type LucideIcon,
 } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
 import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
 import { HighlightRow } from "@/components/highlight-row"
+import { work, WorkCard } from "@/components/work-card"
 import { FadeIn, SlideInLeft, SlideInRight, StaggerIn } from "@/components/animations/reveal-animations"
 
 const GITHUB_URL = "https://github.com/abdulmalikadebayo"
@@ -129,76 +125,6 @@ const services = [
     icon: Cloud,
     desc: "Containerised deployments and CI/CD pipelines on AWS and GCP, built for scale and repeatability.",
     tags: ["AWS", "GCP", "Docker"],
-  },
-]
-
-type WorkItem = {
-  clientLogo?: string // shown only where public / permitted
-  icon?: LucideIcon // fallback mark for confidential clients
-  title: string
-  desc: string
-  role: string
-  employer: string
-  employerLogo: string
-  caseStudyUrl?: string // if the client is public (e.g. an employer case study), link it
-}
-
-const BRDGE_LOGO = "/brdge-logo.png"
-const AXIOMFUSE_LOGO = "/axiomfuse-logo.png"
-const SUPERNOMICS_LOGO = "/supernomics-mark.png" // square ring mark (the wordmark looks off at footer size)
-
-const work: WorkItem[] = [
-  {
-    clientLogo: "/shyft-logo.png",
-    icon: Stethoscope,
-    title: "Shyft",
-    desc: "Contributed to the backend and AI features of a cross-platform NHS healthcare-staffing ecosystem: intelligent job-matching, a real-time staffing insights dashboard and scheduling, connecting 1,492+ professionals to 4,990+ jobs.",
-    role: "Backend & AI",
-    employer: "Axiomfuse",
-    employerLogo: AXIOMFUSE_LOGO,
-    caseStudyUrl: "https://axiomfuse.com/case-studies/shyft-healthcare",
-  },
-  {
-    clientLogo: "/apprentago-logo.png",
-    title: "Apprentago",
-    desc: "AI-powered apprenticeship platform. I built the complete backend and API layer for 22,000+ users and 10,000+ job listings.",
-    role: "Backend & API · 2024–2025",
-    employer: "BRDGE",
-    employerLogo: BRDGE_LOGO,
-  },
-  {
-    clientLogo: "/xcare-logo.svg",
-    icon: Wallet,
-    title: "XCARE Capital",
-    desc: "Core member of the two-person backend & blockchain team. Built the self-custodial wallet infrastructure from inception, integrating Aave, Morpho, Kamino & Jito with real-time position tracking across Ethereum & Solana, plus in-app calls and messaging.",
-    role: "Backend Engineer",
-    employer: "Axiomfuse",
-    employerLogo: AXIOMFUSE_LOGO,
-    caseStudyUrl: "https://axiomfuse.com/case-studies/xcare-capital",
-  },
-  {
-    icon: Scale,
-    title: "Arabic–English Legal Chatbot",
-    desc: "Llama 3 + Legal GPT on AWS Bedrock, handling 200+ queries a day for a client with strict data-sovereignty needs.",
-    role: "LLM Engineer",
-    employer: "BRDGE",
-    employerLogo: BRDGE_LOGO,
-  },
-  {
-    icon: ShieldCheck,
-    title: "LLM Safety Pipeline",
-    desc: "Prompt-injection detection and content filtering on Anthropic's Claude API, tuned to reduce harmful outputs at low latency.",
-    role: "AI Engineer",
-    employer: "Supernomics",
-    employerLogo: SUPERNOMICS_LOGO,
-  },
-  {
-    icon: Sparkles,
-    title: "Adaptive Personality Assessment",
-    desc: "GPT-4o assessment with confidence-based trait scoring across 35 attributes and adaptive, gap-driven question selection.",
-    role: "AI Engineer",
-    employer: "Axiomfuse",
-    employerLogo: AXIOMFUSE_LOGO,
   },
 ]
 
@@ -603,55 +529,9 @@ export default function HomePage() {
             </FadeIn>
 
             <StaggerIn staggerDelay={0.1} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {work.slice(0, 3).map((p) => {
-                const cardClass =
-                  "group relative flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
-                const body = (
-                  <>
-                    {p.caseStudyUrl && (
-                      <ArrowUpRight className="absolute right-6 top-6 h-4 w-4 text-slate-300 transition-colors group-hover:text-primary" />
-                    )}
-                    {/* client / product */}
-                    <div className="mb-5 flex h-12 items-center gap-3">
-                      {p.clientLogo ? (
-                        <img
-                          src={p.clientLogo}
-                          alt={p.title}
-                          className="max-h-9 w-auto max-w-[160px] object-contain object-left"
-                        />
-                      ) : (
-                        <>
-                          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                            {p.icon && <p.icon className="h-6 w-6 text-primary" />}
-                          </span>
-                          <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                            Confidential
-                          </span>
-                        </>
-                      )}
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900">{p.title}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{p.desc}</p>
-                    <p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{p.role}</p>
-                    {/* employer credit */}
-                    <div className="mt-4 flex items-center gap-2 border-t border-slate-200 pt-4">
-                      <span className="text-xs text-slate-500">
-                        Built at <span className="font-semibold text-slate-900">{p.employer}</span>
-                      </span>
-                      <img src={p.employerLogo} alt={p.employer} className="h-5 w-auto max-w-[72px] object-contain" />
-                    </div>
-                  </>
-                )
-                return p.caseStudyUrl ? (
-                  <a key={p.title} href={p.caseStudyUrl} target="_blank" rel="noopener noreferrer" className={cardClass}>
-                    {body}
-                  </a>
-                ) : (
-                  <div key={p.title} className={cardClass}>
-                    {body}
-                  </div>
-                )
-              })}
+              {work.slice(0, 3).map((p) => (
+                <WorkCard key={p.title} item={p} />
+              ))}
             </StaggerIn>
 
             <FadeIn>
