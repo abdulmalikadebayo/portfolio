@@ -114,7 +114,12 @@ export async function POST(request: Request) {
     })
 
     if (ownerRes.error) {
-      return NextResponse.json({ ok: false, error: "Could not send your message. Please try again." }, { status: 502 })
+      console.error("Resend owner-notification failed:", ownerRes.error)
+      const detail =
+        process.env.NODE_ENV === "development"
+          ? ownerRes.error.message || "Resend rejected the send."
+          : "Could not send your message. Please try again."
+      return NextResponse.json({ ok: false, error: detail }, { status: 502 })
     }
 
     // 2. Confirm to the sender. Best-effort: if this one fails (e.g. no verified
