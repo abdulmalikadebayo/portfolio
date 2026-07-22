@@ -14,8 +14,8 @@ const EMAIL = "abdulmalikadebayo1@gmail.com"
 
 const stats = [
   { value: `${work.length}`, label: "Products shipped" },
-  { value: "28K+", label: "Users reached" },
-  { value: "4", label: "Continents" },
+  { value: "23K+", label: "Users reached" },
+  { value: "3", label: "Continents" },
 ]
 
 type Filter = WorkCategory | "All"
