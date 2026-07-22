@@ -4,7 +4,7 @@ import type React from "react"
 export const metadata: Metadata = {
   title: "About",
   description:
-    "The story behind the work: Adebayo Abdul-Malik's path from AI research to shipping production LLM and backend systems, plus talks, writing and community leadership.",
+    "Adebayo Abdul-Malik's path from AI research to shipping production LLM and backend systems, plus talks, writing and community leadership.",
   alternates: { canonical: "/about" },
 }
 
