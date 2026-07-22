@@ -48,7 +48,7 @@ export function ImageCarousel({ images, interval = 4000, className = "" }: Image
                 // blurred fill so tall portraits look intentional instead of leaving bars
                 <Image
                   src={image.src}
-                  alt=""
+                  alt={image.alt}
                   aria-hidden="true"
                   fill
                   sizes="(min-width: 768px) 1152px, 100vw"
