@@ -40,10 +40,9 @@ export const workCategories: WorkCategory[] = ["AI & Backend", "Full-stack"]
 export const work: WorkItem[] = [
   {
     clientLogo: "/mlg-logo.png",
-    clientLogoClass: "max-h-12", // elephant + wordmark, needs the full row height to read
     icon: HeartHandshake,
     title: "Memory Lane Games",
-    desc: "An empathic voice companion for people living with dementia, taken full-stack from proof of concept to a product valued at over £5 million. The agent hears emotional prosody in a person's voice, not just their words, and paces itself for elderly listeners: slow speech, short sentences, long silences left unbroken. When it senses reminiscence it tool-calls into a photo memory quiz, reads the question aloud and scores the spoken answer using error-less learning, three graded hints and never the word wrong. Distress or self-harm cues escalate to a human carer, and the whole behaviour is bound to a clinical safeguarding spec drawn from Validation Therapy and person-centred dementia care.",
+    desc: "I built this end to end, taking it from proof of concept to a product valued at over £5 million: an empathic voice companion for people with dementia. It reads emotional prosody in the voice, not just the words, and paces itself for elderly listeners. When someone reminisces it tool-calls into a photo memory quiz, read aloud and scored with error-less learning that never says the word wrong. Distress cues escalate to a human carer, and the whole behaviour is bound to a clinical safeguarding spec drawn from Validation Therapy.",
     role: "Full-stack · AI, Backend & Frontend",
     period: "2025",
     category: "Full-stack",
@@ -58,7 +57,7 @@ export const work: WorkItem[] = [
     title: "Shyft",
     desc: "Contributed to the backend and AI features of a cross-platform NHS healthcare-staffing ecosystem: intelligent job-matching, a real-time staffing insights dashboard and scheduling, connecting 1,492+ professionals to 4,990+ jobs.",
     role: "Backend & AI",
-    period: "2026",
+    period: "2026 – present",
     category: "AI & Backend",
     stack: ["Python", "Django", "PostgreSQL", "Job matching"],
     employer: "Axiomfuse",
@@ -91,12 +90,11 @@ export const work: WorkItem[] = [
   },
   {
     clientLogo: "/foresight-logo.png",
-    clientLogoClass: "max-h-11", // node mark + wordmark
     icon: LineChart,
     title: "ForeSight",
-    desc: "Core member of a two-person team that built the full stack, frontend, backend and AI, of ForeSight: R&D tax report-writing software and CRM. Owned the product end to end from the data model and API layer through to the interface, with an LLM drafting technical R&D tax reports and analysis at its core.",
+    desc: "As one of a two-person team, I built ForeSight full-stack, frontend, backend and AI: R&D tax report-writing software and CRM. I owned it end to end, from the data model and API layer through to the interface, with an LLM drafting the technical R&D tax reports at its core.",
     role: "Full-stack · AI, Backend & Frontend",
-    period: "2026",
+    period: "2026 – present",
     category: "Full-stack",
     stack: ["Django REST", "LLM", "React", "PostgreSQL", "AWS"],
     employer: "Axiomfuse",
@@ -105,7 +103,6 @@ export const work: WorkItem[] = [
   },
   {
     clientLogo: "/snugsbaby-logo.png",
-    clientLogoClass: "max-h-12", // wordmark, needs the full row height to read at the same weight as the square marks
     icon: Baby,
     title: "Snugs Baby",
     desc: "An AI weaning assistant for breastfeeding and early-stage mothers, built full-stack into the brand's existing Shopify store. Runs on OpenAI's GPT-4o, grounded in NHS and WHO guidance via a RAG pipeline (FAISS + embeddings), with per-baby profiles and age-aware advice, voice, photo and document input, automatic safety checks on every response, food-introduction tracking and matched product recommendations from the Shopify catalogue.",
@@ -133,7 +130,7 @@ export const work: WorkItem[] = [
   {
     icon: DraftingCompass,
     title: "Gustave · GMF Technologies",
-    desc: "From exhibition prototype to working product: a full-stack AI assistant for GMF Technologies, a building-services engineering firm. Engineers upload PDF drawings for entity recognition and CAD-readable conversion, then ask questions answered from the CIBSE guides and the client's own internal documentation. Retrieval runs on an in-process FAISS index built from Titan embeddings, with Llama 3 on AWS Bedrock answering only from retrieved context and citing the source guide and page.",
+    desc: "I took this from an exhibition prototype to a working product, built full-stack: an AI assistant for GMF Technologies, a building-services engineering firm. Engineers upload PDF drawings for entity recognition and CAD-readable conversion, then ask questions answered from the CIBSE guides and the client's own documentation. I built the retrieval on an in-process FAISS index of Titan embeddings, with Llama 3 on AWS Bedrock answering only from retrieved context and citing the source guide and page.",
     role: "Full-stack · AI, Backend & Frontend",
     period: "2025",
     category: "Full-stack",
@@ -175,7 +172,7 @@ export function WorkCard({ item, showStack = false }: { item: WorkItem; showStac
           <img
             src={item.clientLogo}
             alt={item.title}
-            className={cn("w-auto max-w-[160px] object-contain object-left", item.clientLogoClass ?? "max-h-9")}
+            className={cn("w-auto max-w-[160px] object-contain object-left", item.clientLogoClass ?? "max-h-10")}
           />
         ) : (
           <>
