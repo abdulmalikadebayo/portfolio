@@ -4,18 +4,14 @@ import type React from "react"
 
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Mail, Send, CheckCircle, AlertCircle, User, MessageSquare } from "lucide-react"
-import { FadeIn } from "@/components/animations/reveal-animations"
+import { Mail, Send, CheckCircle, AlertCircle, User, MessageSquare, Phone, MapPin, Globe } from "lucide-react"
 
 interface ContactModalProps {
   isOpen: boolean
   onClose: () => void
 }
+
+const EMAIL = "abdulmalikadebayo1@gmail.com"
 
 export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [formData, setFormData] = useState({
@@ -44,9 +40,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
       )
-      const mailtoLink = `mailto:abdulmalikadebayo1@gmail.com?subject=${subject}&body=${body}`
-
-      window.location.href = mailtoLink
+      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`
 
       setSubmitStatus("success")
 
@@ -90,159 +84,190 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }))
   }
 
+  const contactRows = [
+    { icon: Mail, value: EMAIL },
+    { icon: Phone, value: "+2348036561316" },
+    { icon: MapPin, value: "Lagos, Nigeria" },
+    { icon: Globe, value: "Available for remote work" },
+  ]
+
+  const inputClass =
+    "w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[95vh] overflow-y-auto">
+      <DialogContent className="home-redesign font-body max-h-[90vh] max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 text-slate-900 sm:p-8">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold font-serif text-primary flex items-center gap-2">
-            <Mail className="h-6 w-6" />
-            Get In Touch
+          <DialogTitle className="flex items-center gap-2.5 font-display text-2xl font-bold text-slate-900">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
+              <Mail className="h-5 w-5 text-primary" />
+            </span>
+            Get in touch
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
-          <FadeIn>
-            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-              <h3 className="font-semibold">Contact Information</h3>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p>📧 abdulmalikadebayo1@gmail.com</p>
-                <p>📱 +2348036561316</p>
-                <p>📍 Lagos, Nigeria</p>
-                <p>🌐 Available for remote work</p>
-              </div>
-            </div>
-          </FadeIn>
+          {/* Contact information */}
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">Contact information</h3>
+            <ul className="mt-3 space-y-2.5">
+              {contactRows.map((row) => (
+                <li key={row.value} className="flex items-center gap-3 text-sm text-slate-600">
+                  <row.icon className="h-4 w-4 shrink-0 text-primary" />
+                  <span>{row.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <FadeIn delay={0.1}>
-            <div className="space-y-3">
-              <h3 className="font-semibold">Quick Templates</h3>
-              <div className="flex flex-wrap gap-2">
-                {quickTemplates.map((template, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    size="sm"
+          {/* Quick templates */}
+          <div>
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-slate-400">Quick templates</h3>
+            <div className="flex flex-wrap gap-2">
+              {quickTemplates.map((template) => {
+                const active = formData.subject === template.subject
+                return (
+                  <button
+                    key={template.label}
+                    type="button"
                     onClick={() => handleTemplateSelect(template)}
-                    className="text-xs !cursor-pointer"
+                    className={
+                      active
+                        ? "rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground transition-colors"
+                        : "rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-semibold text-slate-600 transition-colors hover:border-primary hover:text-primary"
+                    }
                   >
                     {template.label}
-                  </Button>
-                ))}
-              </div>
+                  </button>
+                )
+              })}
             </div>
-          </FadeIn>
+          </div>
 
-          <FadeIn delay={0.2}>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    Name *
-                  </Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Your full name"
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    Email *
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="your.email@example.com"
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="subject" className="flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4" />
-                  Subject *
-                </Label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <label htmlFor="name" className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                  <User className="h-3.5 w-3.5 text-primary" /> Name <span className="text-primary">*</span>
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="What's this about?"
+                  placeholder="Your full name"
                   required
                   disabled={isSubmitting}
+                  className={inputClass}
                 />
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="message">Message *</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                  <Mail className="h-3.5 w-3.5 text-primary" /> Email <span className="text-primary">*</span>
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="Tell me about your project, opportunity, or question..."
-                  rows={6}
+                  placeholder="your.email@example.com"
                   required
                   disabled={isSubmitting}
+                  className={inputClass}
                 />
               </div>
-
-              {submitStatus === "success" && (
-                <div className="flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded-lg">
-                  <CheckCircle className="h-5 w-5" />
-                  <span>Message sent successfully! Your email client should open shortly.</span>
-                </div>
-              )}
-
-              {submitStatus === "error" && (
-                <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg">
-                  <AlertCircle className="h-5 w-5" />
-                  <span>Something went wrong. Please try again or contact me directly.</span>
-                </div>
-              )}
-
-              <div className="flex gap-4 pt-4">
-                <Button type="submit" disabled={isSubmitting} className="flex-1 !cursor-pointer" size="lg">
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
-                <Button type="button" variant="outline" onClick={onClose} size="lg" className="!cursor-pointer">
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </FadeIn>
-
-          {/* <FadeIn delay={0.3}> */}
-            <div className="text-center text-sm text-muted-foreground border-t space-y-2 pt-4">
-              <p>I typically respond within 24 hours.</p>
-              <div className="flex justify-center gap-2 mt-2">
-                <Badge variant="secondary">AI Research</Badge>
-                <Badge variant="secondary">Backend Development</Badge>
-                <Badge variant="secondary">Collaborations</Badge>
-              </div>
             </div>
-          {/* </FadeIn> */}
+
+            <div className="space-y-1.5">
+              <label htmlFor="subject" className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                <MessageSquare className="h-3.5 w-3.5 text-primary" /> Subject <span className="text-primary">*</span>
+              </label>
+              <input
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                placeholder="What's this about?"
+                required
+                disabled={isSubmitting}
+                className={inputClass}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="message" className="text-sm font-semibold text-slate-700">
+                Message <span className="text-primary">*</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                placeholder="Tell me about your project, opportunity, or question..."
+                rows={5}
+                required
+                disabled={isSubmitting}
+                className={`${inputClass} resize-y`}
+              />
+            </div>
+
+            {submitStatus === "success" && (
+              <div className="flex items-center gap-2 rounded-xl bg-primary/10 p-3 text-sm text-primary">
+                <CheckCircle className="h-5 w-5 shrink-0" />
+                <span>Message ready. Your email client should open shortly.</span>
+              </div>
+            )}
+
+            {submitStatus === "error" && (
+              <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 text-sm text-red-600">
+                <AlertCircle className="h-5 w-5 shrink-0" />
+                <span>Something went wrong. Please try again or email me directly.</span>
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" /> Send message
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-full border border-slate-200 px-6 py-3 font-semibold text-slate-700 transition-colors hover:border-slate-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+
+          {/* Footer */}
+          <div className="space-y-3 border-t border-slate-200 pt-5 text-center">
+            <p className="text-sm text-slate-500">I typically respond within 24 hours.</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {["AI & LLM Systems", "Backend Engineering", "Collaborations"].map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

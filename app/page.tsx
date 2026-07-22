@@ -31,9 +31,9 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/abdul-malik-adebayo-294161174/
 const EMAIL = "abdulmalikadebayo1@gmail.com"
 
 const heroStats = [
-  { value: "28K+", label: "Users reached" },
+  { value: "23K+", label: "Users reached" },
   { value: "7", label: "Countries" },
-  { value: "4", label: "Continents" },
+  { value: "3", label: "Continents" },
 ]
 
 const experience = [
