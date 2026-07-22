@@ -2,15 +2,12 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Download, ExternalLink, Github, Linkedin, Mail } from "lucide-react"
+import { ArrowRight, Download, ExternalLink, Github, Linkedin, Mail } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { ContactModal } from "@/components/contact-modal"
 import { TechStack } from "@/components/tech-stack"
 import { CareerTimeline, type Job } from "@/components/career-timeline"
 import { Magnetic } from "@/components/magnetic"
-import { CustomCursor } from "@/components/custom-cursor"
-import { ScrollProgress } from "@/components/scroll-progress"
-import { GridBackdrop } from "@/components/grid-backdrop"
 import { FadeIn, LineReveal } from "@/components/animations/reveal-animations"
 
 const GITHUB_URL = "https://github.com/abdulmalikadebayo"
@@ -39,7 +36,7 @@ const experience: Job[] = [
         ],
       },
     ],
-    tags: ["Claude API", "LLM Safety", "Electron.js"],
+    tags: ["Claude API", "LLM Safety", "Prompt Injection", "Content Filtering", "Electron.js", "Python"],
   },
   {
     company: "Axiomfuse",
@@ -58,7 +55,20 @@ const experience: Job[] = [
         ],
       },
     ],
-    tags: ["Solana", "Ethereum", "GPT-4o", "WebSockets"],
+    tags: [
+      "Django",
+      "PostgreSQL",
+      "Ethereum",
+      "Solana",
+      "WebSockets",
+      "Celery",
+      "Redis",
+      "GPT-4o",
+      "React",
+      "AWS",
+      "Docker",
+      "GitHub Actions",
+    ],
   },
   {
     company: "BRDGE",
@@ -86,7 +96,21 @@ const experience: Job[] = [
         ],
       },
     ],
-    tags: ["Llama 3", "AWS Bedrock", "RAG", "Django"],
+    tags: [
+      "Django",
+      "RAG",
+      "Llama 3",
+      "AWS Bedrock",
+      "LlamaIndex",
+      "FAISS",
+      "OpenAI",
+      "Whisper",
+      "React",
+      "PostgreSQL",
+      "GCP",
+      "Docker",
+      "GitHub Actions",
+    ],
   },
   {
     company: "Synergy Solutions",
@@ -129,31 +153,30 @@ export default function ResumePage() {
   const openContact = () => setIsContactModalOpen(true)
 
   return (
-    <div className="home-redesign font-body relative min-h-screen overflow-hidden bg-[#0a0a0a] text-white">
-      <CustomCursor />
-      <ScrollProgress />
+    <div className="home-redesign font-body">
+      <Navigation />
 
-      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
-        <GridBackdrop />
-      </div>
-
-      <div className="relative z-10">
-        <Navigation />
-
-        <main className="pt-20">
-          {/* 1. HERO */}
-          <section className="relative px-6 py-28 md:py-36">
-            <div className="mx-auto max-w-4xl space-y-8">
-              <p className="flex items-center gap-3 font-code text-sm font-bold uppercase tracking-widest text-accent-teal">
+      <main className="pt-20">
+        {/* 1. HERO (dark) */}
+        <section className="relative overflow-hidden bg-[#081a3d] text-white">
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
+          <div className="absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-primary/20 blur-[140px]" />
+          <div className="relative mx-auto max-w-3xl px-6 py-24">
+            <div className="space-y-8">
+              <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-accent-teal">
                 <span className="h-px w-8 bg-accent-teal" /> Resume
               </p>
               <LineReveal>
-                <h1 className="font-display text-6xl font-extrabold leading-[1.02] md:text-8xl">
-                  The full <span className="text-primary italic">career history.</span>
+                <h1 className="font-display text-5xl font-extrabold leading-[1.05] md:text-6xl">
+                  The full <br />
+                  <span className="text-primary italic">career history.</span>
                 </h1>
               </LineReveal>
-              <p className="text-lg font-medium text-slate-300">Senior AI &amp; Backend Engineer · Lagos, Nigeria</p>
-              <div className="flex flex-wrap gap-4 pt-2">
+              <p className="max-w-xl text-lg leading-relaxed text-slate-400">
+                Every role, in full: the AI and backend systems I've shipped across San Francisco, London and the Gulf,
+                from research through to reliable production.
+              </p>
+              <div className="flex flex-wrap gap-4">
                 <Magnetic>
                   <a
                     href={CV_PDF}
@@ -174,95 +197,122 @@ export default function ResumePage() {
                   </a>
                 </Magnetic>
               </div>
-              <FadeIn className="pt-10">
-                <span className="font-code text-[10px] uppercase tracking-[0.3em] text-slate-500">
-                  Scroll to explore
-                </span>
-              </FadeIn>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* 2. EXPERIENCE */}
-          <section className="relative px-6 py-24">
-            <div className="mx-auto max-w-5xl">
-              <p className="mb-4 font-code text-sm font-bold uppercase tracking-widest text-accent-teal">Experience</p>
-              <LineReveal>
-                <h2 className="mb-14 font-display text-4xl font-bold md:text-6xl">Roles &amp; impact.</h2>
-              </LineReveal>
-              <CareerTimeline experience={experience} />
-            </div>
-          </section>
+        {/* 2. EXPERIENCE (light) */}
+        <section className="bg-slate-50 py-24 px-6">
+          <div className="mx-auto max-w-5xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Experience</p>
+              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">Roles &amp; impact.</h2>
+            </FadeIn>
+            <CareerTimeline experience={experience} variant="light" />
+          </div>
+        </section>
 
-          {/* 3. SKILLS */}
-          <section className="relative px-6 py-24">
-            <div className="mx-auto max-w-5xl">
-              <p className="mb-4 font-code text-sm font-bold uppercase tracking-widest text-accent-teal">Skills</p>
-              <LineReveal>
-                <h2 className="mb-14 font-display text-4xl font-bold md:text-6xl">Tools I work with.</h2>
-              </LineReveal>
-              <TechStack variant="dark" />
-              <FadeIn>
-                <p className="mt-12 text-sm text-slate-400">
-                  Education, talks and community work live on the{" "}
-                  <Link href="/about" className="font-semibold text-primary hover:underline">
-                    About page
-                  </Link>
-                  . Prefer a conversation?{" "}
-                  <button onClick={openContact} className="font-semibold text-primary hover:underline">
-                    Get in touch
-                  </button>
-                  .
-                </p>
-              </FadeIn>
-            </div>
-          </section>
-        </main>
-
-        {/* 4. FOOTER */}
-        <footer className="border-t border-white/10 px-6 py-16">
-          <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
-            <div>
-              <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-                Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+        {/* 3. SKILLS (light) */}
+        <section className="bg-white py-24 px-6">
+          <div className="mx-auto max-w-6xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Skills</p>
+              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">Tools I work with.</h2>
+            </FadeIn>
+            <TechStack />
+            <FadeIn>
+              <p className="mt-12 text-sm text-slate-600">
+                Education, talks and community work live on the{" "}
+                <Link href="/about" className="font-semibold text-primary hover:underline">
+                  About page
+                </Link>
+                . Prefer a conversation?{" "}
+                <button onClick={openContact} className="font-semibold text-primary hover:underline">
+                  Get in touch
+                </button>
+                .
               </p>
-            </div>
-            <div>
-              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Explore</p>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li><Link href="/" className="hover:text-primary">Home</Link></li>
-                <li><Link href="/about" className="hover:text-primary">About</Link></li>
-                <li><Link href="/resume" className="hover:text-primary">Resume</Link></li>
-                <li><Link href="/portfolio" className="hover:text-primary">Portfolio</Link></li>
-              </ul>
-            </div>
-            <div>
-              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Connect</p>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li>
-                  <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 hover:text-primary">
-                    <Mail className="h-4 w-4" /> Email
-                  </a>
-                </li>
-                <li>
-                  <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
-                    <Linkedin className="h-4 w-4" /> LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
-                    <Github className="h-4 w-4" /> GitHub
-                  </a>
-                </li>
-              </ul>
-            </div>
+            </FadeIn>
           </div>
-          <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-slate-500 md:flex-row">
-            <span>© {new Date().getFullYear()} Adebayo Abdul-Malik.</span>
-            <span>Lagos, Nigeria</span>
+        </section>
+
+        {/* 4. CONTACT CTA (dark) */}
+        <section className="relative overflow-hidden bg-[#081a3d] py-28 px-6 text-center text-white">
+          <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
+          <div className="relative mx-auto max-w-3xl">
+            <FadeIn>
+              <p className="mb-4 text-sm font-bold uppercase tracking-widest text-accent-teal">Let's talk</p>
+              <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl">
+                Let's build something <span className="text-primary">ambitious.</span>
+              </h2>
+              <p className="mx-auto mt-6 max-w-xl text-lg text-slate-400">
+                Whether it's an AI system, a backend platform or a research collaboration, let's start a conversation.
+              </p>
+              <div className="mt-10 flex flex-wrap justify-center gap-4">
+                <button
+                  onClick={openContact}
+                  className="flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                >
+                  Get in touch <ArrowRight className="h-4 w-4" />
+                </button>
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-full border border-white/25 px-8 py-3.5 font-semibold transition-colors hover:border-white/60"
+                >
+                  <Linkedin className="h-4 w-4" /> Connect on LinkedIn
+                </a>
+              </div>
+            </FadeIn>
           </div>
-        </footer>
-      </div>
+        </section>
+      </main>
+
+      {/* 5. FOOTER (dark) */}
+      <footer className="bg-[#081a3d] px-6 py-16 text-white">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
+          <div>
+            <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
+              Senior AI &amp; Backend Engineer building production LLM systems, backends and cloud infrastructure.
+            </p>
+          </div>
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Explore</p>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li><Link href="/" className="hover:text-primary">Home</Link></li>
+              <li><Link href="/about" className="hover:text-primary">About</Link></li>
+              <li><Link href="/resume" className="hover:text-primary">Resume</Link></li>
+              <li><Link href="/portfolio" className="hover:text-primary">Portfolio</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Connect</p>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 hover:text-primary">
+                  <Mail className="h-4 w-4" /> Email
+                </a>
+              </li>
+              <li>
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                  <Linkedin className="h-4 w-4" /> LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                  <Github className="h-4 w-4" /> GitHub
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-slate-500 md:flex-row">
+          <span>© {new Date().getFullYear()} Adebayo Abdul-Malik.</span>
+          <span>Lagos, Nigeria</span>
+        </div>
+      </footer>
 
       <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>

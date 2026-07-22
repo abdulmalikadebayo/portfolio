@@ -3,7 +3,7 @@
 /** Dependency-free animated grid backdrop for the black resume page: a slow panning grid + a receding "floor" grid + faint accent glow + vignette. Reduced-motion freezes it. */
 export function GridBackdrop() {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#0a0a0a]">
+    <div className="absolute inset-0 overflow-hidden bg-[#081a3d]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_26%,rgba(13,148,136,0.10),transparent_55%)]" />
       <div className="aa-grid absolute inset-0" />
       <div className="aa-grid-floor absolute inset-x-0 bottom-0 h-[46vh]" />

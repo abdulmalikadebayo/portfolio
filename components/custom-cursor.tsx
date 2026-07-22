@@ -54,7 +54,7 @@ export function CustomCursor() {
       <div ref={ringRef} className="aa-cursor-ring" aria-hidden />
       <style>{`
         .aa-cursor-dot, .aa-cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; border-radius: 9999px; }
-        .aa-cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: #2dd4bf; }
+        .aa-cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: #4f9cf9; }
         .aa-cursor-ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 1.5px solid rgba(45,212,191,0.55);
           transition: width .22s ease, height .22s ease, margin .22s ease, background-color .22s ease; }
         .aa-cursor-ring.cursor-ring-lg { width: 56px; height: 56px; margin: -28px 0 0 -28px; background: rgba(45,212,191,0.08); }

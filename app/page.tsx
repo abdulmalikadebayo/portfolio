@@ -20,6 +20,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { Navigation } from "@/components/navigation"
+import { IntroLoader } from "@/components/intro-loader"
 import { ContactModal } from "@/components/contact-modal"
 import { ImageCarousel, type CarouselImage } from "@/components/image-carousel"
 import { HighlightRow } from "@/components/highlight-row"
@@ -277,11 +278,12 @@ export default function HomePage() {
 
   return (
     <div className="home-redesign font-body">
+      <IntroLoader />
       <Navigation />
 
       <main className="pt-20">
         {/* 1. HERO (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] text-white">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
           <div className="absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto grid min-h-[88vh] max-w-7xl items-center gap-12 px-6 py-24 lg:grid-cols-2">
@@ -315,7 +317,7 @@ export default function HomePage() {
               <div className="grid max-w-lg grid-cols-3 gap-6 border-t border-white/10 pt-8">
                 {heroStats.map((s) => (
                   <div key={s.label}>
-                    <div className="font-display text-3xl font-bold text-primary">{s.value}</div>
+                    <div className="font-display text-3xl font-bold text-white">{s.value}</div>
                     <div className="text-xs uppercase tracking-wider text-slate-500">{s.label}</div>
                   </div>
                 ))}
@@ -432,7 +434,7 @@ export default function HomePage() {
         </section>
 
         {/* 3. WHY I BUILD (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 py-24 px-6 text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] py-24 px-6 text-white">
           <div className="absolute -right-20 top-0 h-96 w-96 rounded-full bg-primary/10 blur-[130px]" />
           <div className="relative mx-auto max-w-5xl">
             <FadeIn>
@@ -581,7 +583,7 @@ export default function HomePage() {
         </section>
 
         {/* 7. CONTACT CTA (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 py-28 px-6 text-center text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] py-28 px-6 text-center text-white">
           <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl">
             <FadeIn>
@@ -614,7 +616,7 @@ export default function HomePage() {
       </main>
 
       {/* 8. FOOTER (dark) */}
-      <footer className="bg-slate-950 px-6 py-16 text-white">
+      <footer className="bg-[#081a3d] px-6 py-16 text-white">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>

@@ -34,7 +34,7 @@ export default function PortfolioPage() {
 
       <main className="pt-20">
         {/* 1. INTRO (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] text-white">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
           <div className="absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl px-6 py-24">
@@ -68,7 +68,7 @@ export default function PortfolioPage() {
               <dl className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
                 {stats.map((s) => (
                   <div key={s.label}>
-                    <dt className="font-display text-3xl font-extrabold text-primary md:text-4xl">{s.value}</dt>
+                    <dt className="font-display text-3xl font-extrabold text-white md:text-4xl">{s.value}</dt>
                     <dd className="mt-1 text-xs uppercase tracking-widest text-slate-500">{s.label}</dd>
                   </div>
                 ))}
@@ -151,7 +151,7 @@ export default function PortfolioPage() {
         </section>
 
         {/* 4. CONTACT CTA (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 py-28 px-6 text-center text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] py-28 px-6 text-center text-white">
           <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl">
             <FadeIn>
@@ -184,7 +184,7 @@ export default function PortfolioPage() {
       </main>
 
       {/* 5. FOOTER (dark) */}
-      <footer className="bg-slate-950 px-6 py-16 text-white">
+      <footer className="bg-[#081a3d] px-6 py-16 text-white">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>

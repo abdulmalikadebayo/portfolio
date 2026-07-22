@@ -127,7 +127,7 @@ export default function AboutPage() {
 
       <main className="pt-20">
         {/* 1. INTRO (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] text-white">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
           <div className="absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl px-6 py-24">
@@ -303,7 +303,7 @@ export default function AboutPage() {
         </section>
 
         {/* 7. CONTACT CTA (dark) */}
-        <section className="relative overflow-hidden bg-slate-950 py-28 px-6 text-center text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] py-28 px-6 text-center text-white">
           <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl">
             <FadeIn>
@@ -336,7 +336,7 @@ export default function AboutPage() {
       </main>
 
       {/* 8. FOOTER (dark) */}
-      <footer className="bg-slate-950 px-6 py-16 text-white">
+      <footer className="bg-[#081a3d] px-6 py-16 text-white">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_1fr_1fr]">
           <div>
             <p className="font-display text-2xl font-extrabold">Adebayo Abdul-Malik</p>
