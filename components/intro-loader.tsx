@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils"
 const WORDS = ["Backend.", "Agentic AI.", "LLMs.", "RAG.", "Cloud & DevOps."]
 const CLOSER = "Abdul-Malik Adebayo" // final brand beat; blue period is appended
 
+const SETTLE_MS = 120 // small buffer after fonts/paint are ready before the first word
 const WORD_MS = 780 // each word's visible window (brdge: wordDur)
 const OUT_LEAD = 240 // start leaving this long before the next word (brdge: wordDur - 240)
 const BRAND_MS = 560 // brand frame hold before the curtain (brdge: brandDur)
@@ -61,22 +62,49 @@ export function IntroLoader() {
       })
 
     const timers: ReturnType<typeof setTimeout>[] = []
-    WORDS.forEach((_, i) => {
-      timers.push(setTimeout(() => set(i, "in"), i * WORD_MS))
-      timers.push(setTimeout(() => set(i, "out"), i * WORD_MS + (WORD_MS - OUT_LEAD)))
-    })
+    let cancelled = false
+    let rafId = 0
 
-    const afterWords = WORDS.length * WORD_MS
-    timers.push(setTimeout(() => setPhase("brand"), afterWords))
-    timers.push(setTimeout(() => setPhase("curtain"), afterWords + BRAND_MS))
-    timers.push(
-      setTimeout(() => {
-        setPhase("hidden")
-        document.body.style.overflow = ""
-      }, afterWords + BRAND_MS + CURTAIN_MS + 300),
-    )
+    const schedule = () => {
+      if (cancelled) return
+      WORDS.forEach((_, i) => {
+        timers.push(setTimeout(() => set(i, "in"), i * WORD_MS))
+        timers.push(setTimeout(() => set(i, "out"), i * WORD_MS + (WORD_MS - OUT_LEAD)))
+      })
+
+      const afterWords = WORDS.length * WORD_MS
+      timers.push(setTimeout(() => setPhase("brand"), afterWords))
+      timers.push(setTimeout(() => setPhase("curtain"), afterWords + BRAND_MS))
+      timers.push(
+        setTimeout(() => {
+          setPhase("hidden")
+          document.body.style.overflow = ""
+        }, afterWords + BRAND_MS + CURTAIN_MS + 300),
+      )
+    }
+
+    // Start only once fonts are loaded and we've painted a frame, so slow
+    // mobile loads don't fire (and batch) the early word timers before the
+    // words can actually render. The words use var(--font-display).
+    const begin = () => {
+      if (cancelled) return
+      // one rAF ensures the first paint has happened before timing starts
+      rafId = requestAnimationFrame(() => {
+        if (cancelled) return
+        timers.push(setTimeout(schedule, SETTLE_MS))
+      })
+    }
+
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts
+    if (fonts?.ready) {
+      fonts.ready.then(begin, begin)
+    } else {
+      begin()
+    }
 
     return () => {
+      cancelled = true
+      cancelAnimationFrame(rafId)
       timers.forEach(clearTimeout)
       document.body.style.overflow = ""
     }
