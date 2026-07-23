@@ -4,7 +4,7 @@ import type React from "react"
 export const metadata: Metadata = {
   title: "Portfolio",
   description:
-    "Selected work: production AI and backend systems by Adebayo Abdul-Malik, from voice agents and RAG assistants to DeFi wallet infrastructure.",
+    "Production AI and backend systems by Adebayo Abdul-Malik: voice agents, RAG assistants and DeFi wallet infrastructure serving 23K+ users.",
   alternates: { canonical: "/portfolio" },
 }
 

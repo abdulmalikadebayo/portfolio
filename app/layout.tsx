@@ -21,7 +21,7 @@ const inter = Inter({
 })
 
 const description =
-  "Adebayo Abdul-Malik — AI & Backend Engineer building production LLM systems, RAG pipelines and scalable backends for teams across four continents."
+  "Adebayo Abdul-Malik — AI & Backend Engineer. Production LLM systems, RAG pipelines and scalable backends serving 23K+ users across four continents."
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

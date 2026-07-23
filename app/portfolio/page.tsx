@@ -16,7 +16,7 @@ const EMAIL = profile.email
 const stats = [
   { value: `${work.length}`, label: "Products shipped" },
   { value: "23K+", label: "Users reached" },
-  { value: "3", label: "Continents" },
+  { value: "4", label: "Continents" },
 ]
 
 type Filter = WorkCategory | "All"

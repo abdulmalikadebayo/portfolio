@@ -52,7 +52,7 @@ const capabilities = [
 const heroStats = [
   { value: "23K+", label: "Users reached" },
   { value: "7", label: "Countries" },
-  { value: "3", label: "Continents" },
+  { value: "4", label: "Continents" },
 ]
 
 const services = [
