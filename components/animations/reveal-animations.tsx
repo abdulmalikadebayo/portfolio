@@ -21,7 +21,7 @@ interface AnimationProps {
 }
 
 // Fade In Animation
-export function FadeIn({ children, delay = 0, duration = 0.8, className = "" }: AnimationProps) {
+export function FadeIn({ children, delay = 0, duration = 0.4, className = "" }: AnimationProps) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -33,11 +33,11 @@ export function FadeIn({ children, delay = 0, duration = 0.8, className = "" }: 
       return
     }
 
-    gsap.fromTo(
+    const animation = gsap.fromTo(
       element,
       {
         opacity: 0,
-        y: 30,
+        y: 12,
       },
       {
         opacity: 1,
@@ -48,10 +48,14 @@ export function FadeIn({ children, delay = 0, duration = 0.8, className = "" }: 
         scrollTrigger: {
           trigger: element,
           start: "top 85%",
-          toggleActions: "play none none reverse",
+          once: true,
         },
       },
     )
+    return () => {
+      animation.scrollTrigger?.kill()
+      animation.revert()
+    }
   }, [delay, duration])
 
   return (
@@ -62,7 +66,7 @@ export function FadeIn({ children, delay = 0, duration = 0.8, className = "" }: 
 }
 
 // Slide In From Left
-export function SlideInLeft({ children, delay = 0, duration = 0.8, className = "" }: AnimationProps) {
+export function SlideInLeft({ children, delay = 0, duration = 0.4, className = "" }: AnimationProps) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -74,11 +78,11 @@ export function SlideInLeft({ children, delay = 0, duration = 0.8, className = "
       return
     }
 
-    gsap.fromTo(
+    const animation = gsap.fromTo(
       element,
       {
         opacity: 0,
-        x: -50,
+        x: -12,
       },
       {
         opacity: 1,
@@ -89,10 +93,14 @@ export function SlideInLeft({ children, delay = 0, duration = 0.8, className = "
         scrollTrigger: {
           trigger: element,
           start: "top 85%",
-          toggleActions: "play none none reverse",
+          once: true,
         },
       },
     )
+    return () => {
+      animation.scrollTrigger?.kill()
+      animation.revert()
+    }
   }, [delay, duration])
 
   return (
@@ -103,7 +111,7 @@ export function SlideInLeft({ children, delay = 0, duration = 0.8, className = "
 }
 
 // Slide In From Right
-export function SlideInRight({ children, delay = 0, duration = 0.8, className = "" }: AnimationProps) {
+export function SlideInRight({ children, delay = 0, duration = 0.4, className = "" }: AnimationProps) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -115,11 +123,11 @@ export function SlideInRight({ children, delay = 0, duration = 0.8, className = 
       return
     }
 
-    gsap.fromTo(
+    const animation = gsap.fromTo(
       element,
       {
         opacity: 0,
-        x: 50,
+        x: 12,
       },
       {
         opacity: 1,
@@ -130,10 +138,14 @@ export function SlideInRight({ children, delay = 0, duration = 0.8, className = 
         scrollTrigger: {
           trigger: element,
           start: "top 85%",
-          toggleActions: "play none none reverse",
+          once: true,
         },
       },
     )
+    return () => {
+      animation.scrollTrigger?.kill()
+      animation.revert()
+    }
   }, [delay, duration])
 
   return (
@@ -144,7 +156,7 @@ export function SlideInRight({ children, delay = 0, duration = 0.8, className = 
 }
 
 // Scale In Animation
-export function ScaleIn({ children, delay = 0, duration = 0.8, className = "" }: AnimationProps) {
+export function ScaleIn({ children, delay = 0, duration = 0.4, className = "" }: AnimationProps) {
   const elementRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -156,25 +168,29 @@ export function ScaleIn({ children, delay = 0, duration = 0.8, className = "" }:
       return
     }
 
-    gsap.fromTo(
+    const animation = gsap.fromTo(
       element,
       {
         opacity: 0,
-        scale: 0.8,
+        scale: 0.97,
       },
       {
         opacity: 1,
         scale: 1,
         duration,
         delay,
-        ease: "back.out(1.7)",
+        ease: "power2.out",
         scrollTrigger: {
           trigger: element,
           start: "top 85%",
-          toggleActions: "play none none reverse",
+          once: true,
         },
       },
     )
+    return () => {
+      animation.scrollTrigger?.kill()
+      animation.revert()
+    }
   }, [delay, duration])
 
   return (
@@ -204,26 +220,30 @@ export function StaggerIn({
       return
     }
 
-    gsap.fromTo(
+    const animation = gsap.fromTo(
       childElements,
       {
         opacity: 0,
-        y: 30,
+        y: 12,
       },
       {
         opacity: 1,
         y: 0,
-        duration: 0.6,
+        duration: 0.4,
         delay,
         stagger: staggerDelay,
         ease: "power2.out",
         scrollTrigger: {
           trigger: container,
           start: "top 85%",
-          toggleActions: "play none none reverse",
+          once: true,
         },
       },
     )
+    return () => {
+      animation.scrollTrigger?.kill()
+      animation.revert()
+    }
   }, [delay, staggerDelay])
 
   return (
@@ -290,7 +310,7 @@ export function LineReveal({ children, className = "", delay = 0 }: { children: 
         ease: "power3.out",
         stagger: 0.12,
         delay,
-        scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none reverse" },
+        scrollTrigger: { trigger: el, start: "top 88%", once: true },
       })
     }, el)
     return () => ctx.revert()

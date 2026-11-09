@@ -24,6 +24,10 @@ export type WorkItem = {
   confidential?: boolean // NDA client: show the "Confidential" label beside the icon
   title: string
   desc: string
+  summary?: string
+  context?: string
+  outcome?: string
+  linkLabel?: string
   role: string
   period?: string // when the work happened; rendered in the footer, not crammed into `role`
   featured?: string[] // press / media mentions, shown as an "As featured in" line
@@ -44,6 +48,10 @@ export const work: WorkItem[] = [
     clientLogo: "/djp-logo.svg",
     icon: Compass,
     title: "Pocket Coach · D Jungle People",
+    outcome: "£100k+ new revenue in four months",
+    context: "A voice-first leadership coach on iOS and Android.",
+    summary: "Built the backend and AI, combining structured coaching, speech and retrieval. Post-workshop retention increased by 20%.",
+    linkLabel: "Read case study",
     desc: "Backend and AI for a voice-first leadership coach, live on iOS and Android, built for D Jungle People, a respected 20-year Southeast Asian coaching firm, and modelled on the founder's own coaching cadence. An LLM runs a strict T-GROW protocol from their proprietary frameworks: one question per turn, exploration before advice, and a confidence-scored close, with speech-to-text in, neural text-to-speech out, and vector retrieval over the coaching corpus. It reached £100k+ in new revenue within four months of launch, with a 20% lift in post-workshop retention.",
     role: "Backend & AI",
     period: "2025",
@@ -57,6 +65,10 @@ export const work: WorkItem[] = [
     clientLogo: "/shyft-logo.png",
     icon: Stethoscope,
     title: "Shyft",
+    outcome: "1,492+ professionals · 4,990+ jobs",
+    context: "Healthcare staffing across four connected products.",
+    summary: "Contributed backend and AI across four connected healthcare-staffing products, including real-time sync, compliance tracking and job matching.",
+    linkLabel: "Read case study",
     desc: "Contributed to the backend and AI behind Shyft, a cross-platform NHS healthcare-staffing ecosystem of four connected products: a mobile app for professionals plus internal, agency and hospital dashboards, all on one shared backend. Worked on the real-time data sync, automated compliance tracking and smart job-matching that connect 1,492+ medical professionals to 4,990+ jobs at an 87% satisfaction rate.",
     role: "Backend & AI",
     period: "2026 – present",
@@ -69,6 +81,10 @@ export const work: WorkItem[] = [
   {
     clientLogo: "/apprentago-logo.png",
     title: "Apprentago",
+    outcome: "22,000+ users · 10,000+ job listings",
+    context: "An apprenticeship platform for students and employers.",
+    summary: "Built the complete backend and API layer, powering student and employer dashboards from one central backend.",
+    linkLabel: "Visit product",
     desc: "AI-powered apprenticeship platform. I built the complete backend and API layer for 22,000+ users and 10,000+ job listings, powering multiple dashboards for students and employers on one central backend.",
     role: "Backend & AI",
     period: "2024 – 2025",
@@ -163,13 +179,13 @@ export const work: WorkItem[] = [
  * (full grid). `showStack` adds the tech tags, used only on the portfolio page
  * where the cards carry more depth.
  */
-export function WorkCard({ item, showStack = false }: { item: WorkItem; showStack?: boolean }) {
+export function WorkCard({ item, showStack = false, compact = false }: { item: WorkItem; showStack?: boolean; compact?: boolean }) {
   const cardClass =
-    "group relative flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+    "group relative flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow duration-150 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
 
   const body = (
     <>
-      {item.caseStudyUrl && (
+      {!compact && item.caseStudyUrl && (
         <ArrowUpRight className="absolute right-6 top-6 h-4 w-4 text-slate-300 transition-colors group-hover:text-primary" />
       )}
       {/* client / product */}
@@ -195,7 +211,12 @@ export function WorkCard({ item, showStack = false }: { item: WorkItem; showStac
         )}
       </div>
       <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+      {compact && item.context && <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.context}</p>}
+      {compact && item.outcome && <p className="mt-3 text-xl font-bold leading-snug text-primary">{item.outcome}</p>}
+      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+        {compact && <span className="font-semibold text-slate-900">My contribution: </span>}
+        {compact ? item.summary ?? item.desc : item.desc}
+      </p>
       {item.featured && item.featured.length > 0 && (
         <p className="mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-slate-500">
           <span className="font-semibold uppercase tracking-widest text-slate-400">As featured in</span>
@@ -216,6 +237,12 @@ export function WorkCard({ item, showStack = false }: { item: WorkItem; showStac
         </div>
       )}
       <p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{item.role}</p>
+      {item.caseStudyUrl && (
+        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary underline-offset-4 group-hover:underline">
+          {item.linkLabel ?? "View project"}<ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </span>
+      )}
       {/* employer credit */}
       <div className="mt-4 flex items-center gap-2 border-t border-slate-200 pt-4">
         <span className="text-xs text-slate-500">

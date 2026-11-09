@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 import Image from "next/image"
 import { Quote } from "lucide-react"
 import { LogoImage } from "@/components/logo-image"
@@ -33,12 +33,25 @@ function Avatar({ rec }: { rec: Recommendation }) {
  * how they worked with me), with a link out to the recommender's LinkedIn so a
  * reader can verify it. Mirrors the WorkCard visual language.
  */
-export function RecommendationCard({ rec }: { rec: Recommendation }) {
+export function RecommendationCard({ rec, compact = false }: { rec: Recommendation; compact?: boolean }) {
+  const [expanded, setExpanded] = useState(false)
+  const quoteId = useId()
+  const firstSentence = rec.quote.split(". ")[0]
+  const excerpt = firstSentence.endsWith(".") ? firstSentence : `${firstSentence}.`
+  const canExpand = compact && excerpt.length < rec.quote.length
+
   return (
-    <div className="flex h-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
+    <figure className="flex h-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-150 hover:shadow-lg sm:p-8">
       <Quote className="h-8 w-8 shrink-0 text-primary/20" aria-hidden="true" />
-      <p className="mt-4 flex-1 leading-relaxed text-slate-600">{rec.quote}</p>
-      <div className="mt-6 flex items-center gap-3 border-t border-slate-200 pt-6">
+      <blockquote id={quoteId} className="mt-3 flex-1 leading-relaxed text-slate-600">
+        <p>{canExpand && !expanded ? excerpt : rec.quote}</p>
+      </blockquote>
+      {canExpand && (
+        <button type="button" aria-expanded={expanded} aria-controls={quoteId} onClick={() => setExpanded(!expanded)} className="mt-2 inline-flex min-h-11 items-center self-start rounded-md text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          {expanded ? "Show less" : "Read full recommendation"}
+        </button>
+      )}
+      <figcaption className="mt-4 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-4">
         <Avatar rec={rec} />
         <div className="min-w-0 flex-1">
           <p className="font-bold text-slate-900">{rec.name}</p>
@@ -50,11 +63,11 @@ export function RecommendationCard({ rec }: { rec: Recommendation }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${rec.name} on LinkedIn`}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-primary/10"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <LogoImage src="/linkedin-logo.svg" alt="LinkedIn" className="h-5 w-5" />
         </a>
-      </div>
-    </div>
+      </figcaption>
+    </figure>
   )
 }

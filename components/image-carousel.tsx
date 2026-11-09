@@ -17,33 +17,45 @@ interface ImageCarouselProps {
   /** Auto-advance interval in ms. Set to 0 to disable autoplay. */
   interval?: number
   className?: string
+  compact?: boolean
 }
 
-export function ImageCarousel({ images, interval = 4000, className = "" }: ImageCarouselProps) {
+export function ImageCarousel({ images, interval = 4000, className = "", compact = false }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(interval > 0)
+  const [reducedMotion, setReducedMotion] = useState(true)
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const update = () => setReducedMotion(preference.matches)
+    update()
+    preference.addEventListener("change", update)
+    return () => preference.removeEventListener("change", update)
+  }, [])
 
   const nextSlide = () => setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
   const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
 
   useEffect(() => {
-    if (!isAutoPlaying || interval <= 0 || images.length <= 1) return
-    const id = setInterval(nextSlide, interval)
+    if (reducedMotion || !isAutoPlaying || interval <= 0 || images.length <= 1) return
+    const id = setInterval(() => {
+      setCurrentIndex((previous) => (previous + 1) % images.length)
+    }, interval)
     return () => clearInterval(id)
-  }, [isAutoPlaying, interval, currentIndex, images.length])
+  }, [reducedMotion, isAutoPlaying, interval, images.length])
 
   if (images.length === 0) return null
 
   return (
     <div className={`relative overflow-hidden rounded-3xl border border-border bg-muted shadow-2xl ${className}`}>
       <div
-        className="flex h-full transition-transform duration-500 ease-in-out"
+        className="flex h-full transition-transform duration-300 ease-out motion-reduce:transition-none"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((image, index) => {
           const contain = image.fit === "contain"
           return (
-            <div key={index} className="relative h-96 w-full flex-shrink-0 overflow-hidden bg-muted md:h-[640px]">
+            <div key={index} className={`relative w-full flex-shrink-0 overflow-hidden bg-muted ${compact ? "h-64 sm:h-80 lg:h-[480px]" : "h-96 md:h-[640px]"}`}>
               {contain && (
                 // blurred fill so tall portraits look intentional instead of leaving bars
                 <Image
@@ -59,12 +71,11 @@ export function ImageCarousel({ images, interval = 4000, className = "" }: Image
                 src={image.src}
                 alt={image.alt}
                 fill
-                priority={index === 0}
                 sizes="(min-width: 768px) 1152px, 100vw"
                 className={`relative ${contain ? "object-contain" : "object-cover"}`}
               />
               {image.caption && (
-                <span className="absolute bottom-4 left-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                <span className="absolute bottom-14 left-4 max-w-[calc(100%-2rem)] rounded-xl bg-black/70 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
                   {image.caption}
                 </span>
               )}
@@ -90,7 +101,7 @@ export function ImageCarousel({ images, interval = 4000, className = "" }: Image
             <ChevronRight className="h-5 w-5" />
           </button>
 
-          {interval > 0 && (
+          {interval > 0 && !reducedMotion && (
             <button
               onClick={() => setIsAutoPlaying((v) => !v)}
               aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
@@ -100,14 +111,14 @@ export function ImageCarousel({ images, interval = 4000, className = "" }: Image
             </button>
           )}
 
-          <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1">
+          <div className="absolute bottom-0 left-1/2 flex -translate-x-1/2">
             {images.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 aria-label={`Go to slide ${index + 1}`}
                 aria-current={index === currentIndex}
-                className="flex h-6 w-6 items-center justify-center"
+                className="flex h-11 w-9 items-center justify-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
               >
                 <span
                   className={`h-2.5 w-2.5 rounded-full transition-all ${

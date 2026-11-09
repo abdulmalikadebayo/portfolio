@@ -41,15 +41,15 @@ export function HighlightRow({ item }: { item: HighlightItem }) {
       href={item.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 border-b border-slate-200 px-1.5 py-6 transition-[background-color,padding,box-shadow,border-radius] duration-300 hover:z-10 hover:rounded-2xl hover:border-transparent hover:bg-white hover:px-6 hover:shadow-[0_24px_50px_-38px_rgba(16,18,40,0.5)] md:grid-cols-[96px_1fr_auto] md:gap-6"
+      className="group relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 border-b border-slate-200 py-4 transition-colors duration-150 hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:grid-cols-[96px_minmax(0,1fr)_auto] md:gap-4"
     >
-      <span className="flex h-14 items-center">
+      <span className="flex h-12 min-w-0 items-center [&_img]:max-w-full">
         <HighlightLogo logo={item.logo} icon={item.icon} alt={item.title} />
       </span>
-      <span className="order-last col-span-2 font-display text-lg font-medium leading-snug tracking-tight text-slate-900 transition-colors group-hover:text-primary md:order-none md:col-span-1 md:text-xl">
+      <span className="order-last col-span-2 min-w-0 font-display text-base font-semibold leading-snug text-slate-900 transition-colors group-hover:text-primary md:order-none md:col-span-1 md:text-lg">
         {item.title}
       </span>
-      <span className="flex items-center justify-end gap-3 whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-slate-500">
+      <span className="flex items-center justify-end gap-2 whitespace-nowrap text-xs font-medium text-slate-500">
         {item.label}
         <ArrowUpRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]" />
       </span>

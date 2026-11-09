@@ -35,7 +35,7 @@ function LinkedInIcon({ className }: { className?: string }) {
 }
 
 const iconLinkClass =
-  "flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-primary/10"
+  "flex h-11 w-11 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 
 export function Navigation() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
@@ -45,14 +45,14 @@ export function Navigation() {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between gap-4">
-            <Link href="/" className="flex shrink-0 items-center" aria-label={`${profile.name}, home`}>
-              <Image src="/logo.png" alt={`${profile.name} logo`} width={60} height={20} priority />
+          <div className="flex h-16 items-center justify-between gap-2 sm:gap-4">
+            <Link href="/" className="flex min-h-11 min-w-11 shrink-0 items-center" aria-label={`${profile.name}, home`}>
+              <Image src="/logo.png" alt={`${profile.name} logo`} width={60} height={60} className="h-10 w-10 sm:h-12 sm:w-12" priority />
             </Link>
 
             {/* Pill + icons grouped on the right so the bar reads as one unit
                 instead of three widely-spaced zones with a hollow centre. */}
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-center gap-3">
               {/* Always-visible segmented pill: every page is one tap away on all
                   screen sizes, active page highlighted, no hidden hamburger. */}
               <div className="flex items-center gap-0.5 rounded-full border border-border bg-background/60 p-1">
@@ -64,7 +64,7 @@ export function Navigation() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors sm:px-4 sm:text-sm",
+                        "inline-flex min-h-11 items-center justify-center rounded-full px-1.5 text-xs font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary min-[360px]:px-2 sm:px-4 sm:text-sm",
                         active
                           ? "bg-primary text-primary-foreground"
                           : "text-muted-foreground hover:text-primary",

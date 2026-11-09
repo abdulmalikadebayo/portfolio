@@ -97,12 +97,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const isSuccess = submitStatus === "success"
 
   const inputClass =
-    "w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+    "min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-base text-slate-900 placeholder:text-slate-400 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-sm"
   const labelClass = "text-sm font-semibold text-slate-700"
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="home-redesign font-body max-h-[90vh] max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 text-slate-900 sm:p-7">
+      <DialogContent className="home-redesign font-body max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto overscroll-contain rounded-3xl border border-slate-200 bg-white p-5 text-slate-900 sm:p-7 [&_[data-slot=dialog-close]]:-right-0 [&_[data-slot=dialog-close]]:top-0 [&_[data-slot=dialog-close]]:flex [&_[data-slot=dialog-close]]:h-11 [&_[data-slot=dialog-close]]:w-11 [&_[data-slot=dialog-close]]:items-center [&_[data-slot=dialog-close]]:justify-center [&_[data-slot=dialog-close]]:rounded-full">
         <DialogHeader className="space-y-1.5">
           <DialogTitle className="flex items-center gap-2.5 font-display text-2xl font-bold text-slate-900">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
@@ -199,8 +199,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         onClick={() => handleTemplateSelect(template)}
                         className={
                           active
-                            ? "rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground transition-colors"
-                            : "rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 transition-colors hover:border-primary hover:text-primary"
+                            ? "min-h-11 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-colors"
+                            : "min-h-11 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 transition-colors hover:border-primary hover:text-primary"
                         }
                       >
                         {template.label}

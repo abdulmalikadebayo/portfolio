@@ -47,7 +47,7 @@ export function RecommendationProof({
   return (
     <a
       href="#recommendations"
-      className="group flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3"
+      className="group flex min-h-11 items-center gap-3 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-teal"
       aria-label="See recommendations"
     >
       <div className="flex shrink-0 -space-x-2">

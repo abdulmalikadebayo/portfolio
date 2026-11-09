@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 /**
@@ -46,12 +46,14 @@ function withAccentDot(text: string) {
  */
 let mountedThisDocument = false
 
-export function IntroLoader() {
+export function IntroLoader({ brief = false }: { brief?: boolean }) {
   // Captured at first render: is this the entry page of this document, or a
   // later client-side navigation within it?
   const [isEntryPage] = useState(() => !mountedThisDocument)
-  const [phase, setPhase] = useState<Phase>(isEntryPage ? "words" : "hidden")
+  const [phase, setPhase] = useState<Phase>(isEntryPage ? (brief ? "brand" : "words") : "hidden")
   const [states, setStates] = useState<WordState[]>(() => WORDS.map(() => "idle"))
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const startedRef = useRef(false)
 
   useEffect(() => {
     mountedThisDocument = true
@@ -63,14 +65,31 @@ export function IntroLoader() {
       seen = sessionStorage.getItem("introSeen") === "1"
     } catch {}
 
-    if (reduced || seen) {
+    if (reduced || (seen && !startedRef.current)) {
       setPhase("hidden")
       return
     }
+    startedRef.current = true
 
     try {
       sessionStorage.setItem("introSeen", "1")
     } catch {}
+
+    // The homepage gets one short brand beat, with no font/network wait.
+    if (brief) {
+      const timers = [
+        setTimeout(() => setPhase("curtain"), 650),
+        setTimeout(() => {
+          setPhase("hidden")
+          document.body.style.overflow = ""
+        }, 1000),
+      ]
+      timersRef.current = timers
+      return () => {
+        timers.forEach(clearTimeout)
+        document.body.style.overflow = ""
+      }
+    }
 
     document.body.style.overflow = "hidden"
 
@@ -82,6 +101,7 @@ export function IntroLoader() {
       })
 
     const timers: ReturnType<typeof setTimeout>[] = []
+    timersRef.current = timers
     let cancelled = false
     let rafId = 0
 
@@ -128,15 +148,12 @@ export function IntroLoader() {
       timers.forEach(clearTimeout)
       document.body.style.overflow = ""
     }
-  }, [isEntryPage])
+  }, [isEntryPage, brief])
 
   const skip = () => {
-    if (phase === "hidden" || phase === "curtain") return
-    setPhase("curtain")
-    setTimeout(() => {
-      setPhase("hidden")
-      document.body.style.overflow = ""
-    }, CURTAIN_MS + 300)
+    timersRef.current.forEach(clearTimeout)
+    setPhase("hidden")
+    document.body.style.overflow = ""
   }
 
   if (phase === "hidden") return null
@@ -146,10 +163,14 @@ export function IntroLoader() {
 
   return (
     <div
-      className="home-redesign font-body fixed inset-0 z-[999] flex items-center justify-center overflow-hidden"
-      onClick={skip}
-      aria-hidden
+      className={cn("home-redesign font-body fixed inset-0 z-[999] flex items-center justify-center overflow-hidden motion-reduce:hidden", brief && "intro-brief")}
+      role="region"
+      aria-label="Introduction"
+      onKeyDown={(event) => { if (event.key === "Escape") skip() }}
     >
+      <button type="button" onClick={skip} className="absolute right-4 top-4 z-20 inline-flex min-h-11 items-center rounded-full border border-white/40 px-5 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+        Skip intro
+      </button>
       <style>{`
         @keyframes introWordIn { from { opacity: 0; transform: translate(-50%, 34px); filter: blur(6px); } to { opacity: 1; transform: translate(-50%, 0); filter: blur(0); } }
         @keyframes introWordOut { from { opacity: 1; transform: translate(-50%, 0); filter: blur(0); } to { opacity: 0; transform: translate(-50%, -34px); filter: blur(6px); } }
@@ -161,6 +182,10 @@ export function IntroLoader() {
         }
         .intro-w--in { animation: introWordIn .7s cubic-bezier(.22,1,.36,1) forwards; }
         .intro-w--out { animation: introWordOut .55s cubic-bezier(.22,1,.36,1) forwards; }
+        .intro-w--brief { animation-duration: 300ms; }
+        @keyframes briefIntroExit { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+        .intro-brief { animation: briefIntroExit 250ms ease-out 750ms forwards; }
+        @media (prefers-reduced-motion: reduce) { .intro-w { animation: none; } }
         /* the brand/name beat: smaller than the single words, wraps on narrow screens */
         .intro-w--brand { font-size: clamp(34px, 6vw, 72px); white-space: normal; max-width: min(92vw, 820px); text-align: center; line-height: 1.05; }
       `}</style>
@@ -174,7 +199,7 @@ export function IntroLoader() {
               "h-full flex-1 bg-[#034694] transition-transform ease-[cubic-bezier(0.85,0,0.15,1)]",
               lifting && "-translate-y-[101%]",
             )}
-            style={{ transitionDuration: `${CURTAIN_MS}ms`, transitionDelay: `${n * 50}ms` }}
+            style={{ transitionDuration: `${brief ? 250 : CURTAIN_MS}ms`, transitionDelay: `${n * (brief ? 20 : 50)}ms` }}
           />
         ))}
       </div>
@@ -186,7 +211,7 @@ export function IntroLoader() {
           lifting && "-translate-y-12 opacity-0",
         )}
       >
-        {WORDS.map((word, i) => (
+        {!brief && WORDS.map((word, i) => (
           <p
             key={word}
             className={cn(
@@ -200,7 +225,7 @@ export function IntroLoader() {
         ))}
 
         {showBrand && (
-          <p className="intro-w intro-w--brand intro-w--in">
+          <p className={cn("intro-w intro-w--brand intro-w--in", brief && "intro-w--brief")}>
             {CLOSER}
             <span className="text-accent-teal">.</span>
           </p>
