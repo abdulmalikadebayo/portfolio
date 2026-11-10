@@ -55,7 +55,8 @@ export function ImageCarousel({ images, interval = 4000, className = "", compact
         {images.map((image, index) => {
           const contain = image.fit === "contain"
           return (
-            <div key={index} className={`relative w-full flex-shrink-0 overflow-hidden bg-muted ${compact ? "h-64 sm:h-80 lg:h-[480px]" : "h-96 md:h-[640px]"}`}>
+            <div key={index} aria-hidden={index !== currentIndex} className={`relative w-full flex-shrink-0 overflow-hidden bg-muted ${compact ? "h-64 sm:h-80 lg:h-[480px]" : "h-96 md:h-[640px]"}`}>
+              {index === currentIndex && <>
               {contain && (
                 // blurred fill so tall portraits look intentional instead of leaving bars
                 <Image
@@ -74,6 +75,7 @@ export function ImageCarousel({ images, interval = 4000, className = "", compact
                 sizes="(min-width: 768px) 1152px, 100vw"
                 className={`relative ${contain ? "object-contain" : "object-cover"}`}
               />
+              </>}
               {image.caption && (
                 <span className="absolute bottom-14 left-4 max-w-[calc(100%-2rem)] rounded-xl bg-black/70 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
                   {image.caption}

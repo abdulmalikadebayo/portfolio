@@ -101,37 +101,36 @@ export default function AboutPage() {
 
   return (
     <div className="home-redesign font-body">
-      <IntroLoader />
+      <IntroLoader brief />
       <Navigation />
 
-      <main className="pt-20">
+      <main className="pt-16">
         {/* 1. INTRO (dark) */}
         <section className="relative overflow-hidden bg-[#081a3d] text-white">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.07]" />
           <div className="absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full bg-primary/20 blur-[140px]" />
-          <div className="relative mx-auto max-w-3xl px-6 py-24">
-            <SlideInLeft className="space-y-8">
+          <div className="relative mx-auto max-w-3xl px-5 py-10 sm:px-6 sm:py-16 lg:py-20">
+            <SlideInLeft className="space-y-5 md:space-y-7">
               <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-accent-teal">
                 <span className="h-px w-8 bg-accent-teal" /> About
               </p>
-              <h1 className="font-display text-5xl font-extrabold leading-[1.05] md:text-6xl">
+              <h1 className="font-display text-[clamp(2.25rem,7vw,3.75rem)] font-extrabold leading-[1.08]">
                 The engineer <br />
-                <span className="text-primary italic">behind the work.</span>
+                <span className="text-accent-teal italic">behind the work.</span>
               </h1>
-              <p className="max-w-xl text-lg leading-relaxed text-slate-400">
-                I'm Adebayo, an AI &amp; Backend Engineer from Lagos, building production LLM systems and scalable
-                backends for teams across four continents, from research all the way to reliable deployment.
+              <p className="max-w-xl text-base leading-relaxed text-slate-300 md:text-lg">
+                I'm Adebayo, an AI &amp; Backend Engineer from Lagos. I turn research into production systems for teams across four continents.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/resume"
-                  className="flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary sm:w-auto px-7 py-3.5 font-semibold text-primary-foreground transition-colors duration-150 hover:brightness-110"
                 >
                   <FileText className="h-4 w-4" /> View Resume
                 </Link>
                 <button
                   onClick={openContact}
-                  className="flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-semibold transition-colors hover:border-white/60"
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/25 sm:w-auto px-7 py-3.5 font-semibold transition-colors hover:border-white/60"
                 >
                   Work with me <ArrowRight className="h-4 w-4" />
                 </button>
@@ -141,8 +140,8 @@ export default function AboutPage() {
         </section>
 
         {/* 2. MY STORY (light) */}
-        <section className="bg-slate-50 py-24 px-6">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[0.8fr_1fr]">
+        <section className="bg-slate-50 py-12 px-5 sm:px-6 sm:py-16 lg:py-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[0.8fr_1fr] lg:gap-12">
             <SlideInLeft>
               <div className="relative">
                 <div className="absolute inset-0 rounded-3xl bg-primary/10 blur-2xl" />
@@ -152,14 +151,14 @@ export default function AboutPage() {
                   width={640}
                   height={416}
                   sizes="(min-width: 1024px) 512px, 100vw"
-                  className="relative h-[26rem] w-full rounded-3xl border border-slate-200 object-cover shadow-lg"
+                  className="relative h-64 w-full sm:h-80 lg:h-[26rem] rounded-3xl border border-slate-200 object-cover shadow-lg"
                 />
               </div>
             </SlideInLeft>
             <SlideInRight className="space-y-6">
               <p className="text-sm font-bold uppercase tracking-widest text-primary">My story</p>
-              <h2 className="font-display text-4xl font-bold text-slate-900 md:text-5xl">From research to real-world.</h2>
-              <div className="space-y-4 text-lg leading-relaxed text-slate-600">
+              <h2 className="font-display text-3xl font-bold sm:text-4xl text-slate-900 md:text-5xl">From research to real-world.</h2>
+              <div className="space-y-4 text-base leading-relaxed text-slate-600 md:text-lg">
                 <p>
                   My path started in AI research at Bowen University, where my final-year thesis built a Nigerian Sign
                   Language recognition system, a project obsessed with correctness, evaluation and getting the details
@@ -179,25 +178,25 @@ export default function AboutPage() {
         </section>
 
         {/* 3. TECH STACK (light) */}
-        <section className="bg-white py-24 px-6">
+        <section className="bg-white py-12 px-5 sm:px-6 sm:py-16 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <FadeIn>
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Toolkit</p>
-              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">The tools I build with.</h2>
+              <h2 className="mb-8 md:mb-12 font-display text-3xl font-bold sm:text-4xl text-slate-900 md:text-5xl">The tools I build with.</h2>
             </FadeIn>
             <TechStack />
           </div>
         </section>
 
         {/* 4. EDUCATION (light) */}
-        <section className="bg-slate-50 py-24 px-6">
+        <section className="bg-slate-50 py-12 px-5 sm:px-6 sm:py-16 lg:py-24">
           <div className="mx-auto max-w-5xl">
             <FadeIn>
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Education</p>
-              <h2 className="mb-14 font-display text-4xl font-bold text-slate-900 md:text-5xl">Where it started.</h2>
+              <h2 className="mb-8 md:mb-12 font-display text-3xl font-bold sm:text-4xl text-slate-900 md:text-5xl">Where it started.</h2>
             </FadeIn>
             <FadeIn>
-              <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm md:p-10">
+              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 lg:p-10">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div className="flex items-start gap-4">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
@@ -234,19 +233,19 @@ export default function AboutPage() {
         </section>
 
         {/* 5. LEADERSHIP & COMMUNITY (light) */}
-        <section className="bg-white py-24 px-6">
+        <section className="bg-white py-12 px-5 sm:px-6 sm:py-16 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <FadeIn>
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Leadership &amp; Community</p>
-              <h2 className="mb-4 font-display text-4xl font-bold text-slate-900 md:text-5xl">On stage, in community.</h2>
-              <p className="mb-12 max-w-2xl text-lg text-slate-600">
+              <h2 className="mb-4 font-display text-3xl font-bold sm:text-4xl text-slate-900 md:text-5xl">On stage, in community.</h2>
+              <p className="mb-8 max-w-2xl text-base md:mb-12 md:text-lg text-slate-600">
                 From keynote stages to student leadership, sharing what I learn building AI and helping others get there
                 faster.
               </p>
             </FadeIn>
 
             <FadeIn>
-              <ImageCarousel images={speakingImages} className="mb-12" />
+              <ImageCarousel images={speakingImages} interval={0} compact className="mb-8" />
             </FadeIn>
 
             <StaggerIn staggerDelay={0.08} className="border-t border-slate-200">
@@ -258,11 +257,11 @@ export default function AboutPage() {
         </section>
 
         {/* 6. WRITING & FEATURES (light) */}
-        <section className="bg-slate-50 py-24 px-6">
+        <section className="bg-slate-50 py-12 px-5 sm:px-6 sm:py-16 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <FadeIn>
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">Writing &amp; Features</p>
-              <h2 className="mb-12 font-display text-4xl font-bold text-slate-900 md:text-5xl">Ideas worth sharing.</h2>
+              <h2 className="mb-12 font-display text-3xl font-bold sm:text-4xl text-slate-900 md:text-5xl">Ideas worth sharing.</h2>
             </FadeIn>
 
             <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-400">Writing</p>
@@ -282,13 +281,13 @@ export default function AboutPage() {
         </section>
 
         {/* 7. CONTACT CTA (dark) */}
-        <section className="relative overflow-hidden bg-[#081a3d] py-28 px-6 text-center text-white">
+        <section className="relative overflow-hidden bg-[#081a3d] py-12 px-5 sm:px-6 sm:py-16 lg:py-24 text-center text-white">
           <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
           <div className="relative mx-auto max-w-3xl">
             <FadeIn>
               <p className="mb-4 text-sm font-bold uppercase tracking-widest text-accent-teal">Let's talk</p>
-              <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl">
-                Let's build something <span className="text-primary">ambitious.</span>
+              <h2 className="font-display text-3xl font-bold sm:text-4xl leading-tight md:text-6xl">
+                Let's build something <span className="text-accent-teal">ambitious.</span>
               </h2>
               <p className="mx-auto mt-6 max-w-xl text-lg text-slate-400">
                 Whether it's an AI system, a backend platform or a research collaboration, let's start a conversation.
@@ -296,7 +295,7 @@ export default function AboutPage() {
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <button
                   onClick={openContact}
-                  className="flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary sm:w-auto px-8 py-3.5 font-semibold text-primary-foreground transition-colors duration-150 hover:brightness-110"
                 >
                   Get in touch <ArrowRight className="h-4 w-4" />
                 </button>
@@ -304,7 +303,7 @@ export default function AboutPage() {
                   href={LINKEDIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-full border border-white/25 px-8 py-3.5 font-semibold transition-colors hover:border-white/60"
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/25 sm:w-auto px-8 py-3.5 font-semibold transition-colors hover:border-white/60"
                 >
                   <Linkedin className="h-4 w-4" /> Connect on LinkedIn
                 </a>
@@ -326,27 +325,27 @@ export default function AboutPage() {
           <div>
             <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-400">Explore</p>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link href="/" className="hover:text-primary">Home</Link></li>
-              <li><Link href="/about" className="hover:text-primary">About</Link></li>
-              <li><Link href="/resume" className="hover:text-primary">Resume</Link></li>
-              <li><Link href="/portfolio" className="hover:text-primary">Portfolio</Link></li>
+              <li><Link href="/" className="inline-flex min-h-11 items-center hover:text-accent-teal">Home</Link></li>
+              <li><Link href="/about" className="inline-flex min-h-11 items-center hover:text-accent-teal">About</Link></li>
+              <li><Link href="/resume" className="inline-flex min-h-11 items-center hover:text-accent-teal">Resume</Link></li>
+              <li><Link href="/portfolio" className="inline-flex min-h-11 items-center hover:text-accent-teal">Portfolio</Link></li>
             </ul>
           </div>
           <div>
             <p className="mb-4 text-xs font-bold uppercase tracking-widest text-slate-400">Connect</p>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
-                <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 hover:text-primary">
+                <a href={`mailto:${EMAIL}`} className="inline-flex min-h-11 items-center gap-2 hover:text-accent-teal">
                   <Mail className="h-4 w-4" /> Email
                 </a>
               </li>
               <li>
-                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-accent-teal">
                   <Linkedin className="h-4 w-4" /> LinkedIn
                 </a>
               </li>
               <li>
-                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-accent-teal">
                   <Github className="h-4 w-4" /> GitHub
                 </a>
               </li>

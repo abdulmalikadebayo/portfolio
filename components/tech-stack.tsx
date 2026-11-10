@@ -58,7 +58,7 @@ function TechTile({ tech }: { tech: Tech }) {
   const [error, setError] = useState(false)
   return (
     <div
-      className="flex flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 text-center transition-shadow hover:shadow-md"
+      className="flex min-w-0 flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 text-center transition-shadow hover:shadow-md"
       title={tech.name}
     >
       <span className="flex h-9 w-9 items-center justify-center md:h-11 md:w-11">
@@ -78,7 +78,7 @@ function TechTile({ tech }: { tech: Tech }) {
           />
         )}
       </span>
-      <span className="text-[11px] font-medium leading-tight text-slate-600">{tech.name}</span>
+      <span className="max-w-full break-words text-xs font-medium leading-snug text-slate-600">{tech.name}</span>
     </div>
   )
 }
@@ -91,12 +91,12 @@ export function TechStack({ variant = "light" }: { variant?: "light" | "dark" })
       {techGroups.map((group) => (
         <div
           key={group.label}
-          className={`rounded-3xl border p-6 md:p-8 ${
+          className={`min-w-0 rounded-3xl border p-4 sm:p-6 lg:p-8 ${
             dark ? "border-white/10 bg-white/[0.04] backdrop-blur-sm" : "border-slate-200 bg-slate-50"
           }`}
         >
           <p className={`mb-5 text-sm font-bold ${dark ? "text-white" : "text-slate-900"}`}>{group.label}</p>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 min-[390px]:grid-cols-3 md:grid-cols-4">
             {group.items.map((tech) => (
               <TechTile key={tech.name} tech={tech} />
             ))}

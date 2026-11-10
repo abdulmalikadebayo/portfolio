@@ -52,7 +52,6 @@ export function IntroLoader({ brief = false }: { brief?: boolean }) {
   const [isEntryPage] = useState(() => !mountedThisDocument)
   const [phase, setPhase] = useState<Phase>(isEntryPage ? (brief ? "brand" : "words") : "hidden")
   const [states, setStates] = useState<WordState[]>(() => WORDS.map(() => "idle"))
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const startedRef = useRef(false)
 
   useEffect(() => {
@@ -84,7 +83,6 @@ export function IntroLoader({ brief = false }: { brief?: boolean }) {
           document.body.style.overflow = ""
         }, 1000),
       ]
-      timersRef.current = timers
       return () => {
         timers.forEach(clearTimeout)
         document.body.style.overflow = ""
@@ -101,7 +99,6 @@ export function IntroLoader({ brief = false }: { brief?: boolean }) {
       })
 
     const timers: ReturnType<typeof setTimeout>[] = []
-    timersRef.current = timers
     let cancelled = false
     let rafId = 0
 
@@ -150,12 +147,6 @@ export function IntroLoader({ brief = false }: { brief?: boolean }) {
     }
   }, [isEntryPage, brief])
 
-  const skip = () => {
-    timersRef.current.forEach(clearTimeout)
-    setPhase("hidden")
-    document.body.style.overflow = ""
-  }
-
   if (phase === "hidden") return null
 
   const lifting = phase === "curtain"
@@ -166,11 +157,7 @@ export function IntroLoader({ brief = false }: { brief?: boolean }) {
       className={cn("home-redesign font-body fixed inset-0 z-[999] flex items-center justify-center overflow-hidden motion-reduce:hidden", brief && "intro-brief")}
       role="region"
       aria-label="Introduction"
-      onKeyDown={(event) => { if (event.key === "Escape") skip() }}
     >
-      <button type="button" onClick={skip} className="absolute right-4 top-4 z-20 inline-flex min-h-11 items-center rounded-full border border-white/40 px-5 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
-        Skip intro
-      </button>
       <style>{`
         @keyframes introWordIn { from { opacity: 0; transform: translate(-50%, 34px); filter: blur(6px); } to { opacity: 1; transform: translate(-50%, 0); filter: blur(0); } }
         @keyframes introWordOut { from { opacity: 1; transform: translate(-50%, 0); filter: blur(0); } to { opacity: 0; transform: translate(-50%, -34px); filter: blur(6px); } }

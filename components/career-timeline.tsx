@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Rocket } from "lucide-react"
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap"
-import { TiltCard } from "@/components/tilt-card"
 import { LogoImage } from "@/components/logo-image"
 
 export type Role = { title: string; period: string; bullets: string[] }
@@ -96,6 +95,8 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
 
   useEffect(() => {
     if (prefersReducedMotion()) return
+    const media = gsap.matchMedia()
+    media.add("(min-width: 1024px)", () => {
     const ctx = gsap.context(() => {
       const scrub = { trigger: listRef.current, start: "top 55%", end: "bottom 70%", scrub: true }
       if (fillRef.current && listRef.current) {
@@ -111,13 +112,13 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
         // scrub reveal -> continuous motion on scroll (works on touch)
         gsap.fromTo(
           card,
-          { opacity: 0, y: 70, rotateX: -6 },
+          { opacity: 0, y: 12 },
           {
             opacity: 1,
             y: 0,
-            rotateX: 0,
-            ease: "none",
-            scrollTrigger: { trigger: card, start: "top 92%", end: "top 52%", scrub: true },
+            duration: 0.4,
+            ease: "power2.out",
+            scrollTrigger: { trigger: card, start: "top 90%", once: true },
           },
         )
         // reliable active tracking (fires even for short last card)
@@ -131,12 +132,14 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
     })
     ScrollTrigger.refresh()
     return () => ctx.revert()
+    })
+    return () => media.revert()
   }, [experience.length])
 
   return (
-    <div className="grid gap-10 md:grid-cols-[240px_1fr] md:gap-16">
+    <div className="grid min-w-0 gap-8 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-10 xl:gap-16">
       {/* Sticky chapter rail (desktop) */}
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <div className="sticky top-28">
           <p className={`mb-6 font-code text-xs font-bold uppercase tracking-widest ${dark ? "text-slate-500" : "text-slate-400"}`}>
             {String(active + 1).padStart(2, "0")} / {String(experience.length).padStart(2, "0")}
@@ -181,7 +184,7 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
       </div>
 
       {/* Role cards */}
-      <div ref={listRef} className="space-y-6 [perspective:1200px] md:space-y-8">
+      <div ref={listRef} className="min-w-0 space-y-5 lg:space-y-8">
         {experience.map((job, i) => (
           <div
             key={job.company + job.period}
@@ -189,9 +192,9 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
               cardRefs.current[i] = el
             }}
           >
-            <TiltCard className="rounded-3xl">
+            <div className="min-w-0 rounded-3xl">
               <div
-                className={`rounded-3xl border p-7 md:p-9 ${
+                className={`rounded-3xl border p-5 sm:p-7 lg:p-9 ${
                   dark
                     ? "border-white/10 bg-white/[0.04] shadow-[0_24px_60px_-34px_rgba(0,0,0,0.7)] backdrop-blur-sm"
                     : "border-slate-200 bg-white shadow-sm"
@@ -237,10 +240,10 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
                           {role.bullets.map((b, bi) => (
                             <li
                               key={bi}
-                              className={`flex gap-3 text-[15px] leading-relaxed ${dark ? "text-slate-300" : "text-slate-600"}`}
+                              className={`flex gap-2 text-base leading-relaxed sm:gap-3 sm:text-[15px] ${dark ? "text-slate-300" : "text-slate-600"}`}
                             >
                               <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                              <span>{b}</span>
+                              <span className="min-w-0">{b}</span>
                             </li>
                           ))}
                         </ul>
@@ -264,7 +267,7 @@ export function CareerTimeline({ experience, variant = "dark" }: { experience: J
                   </div>
                 )}
               </div>
-            </TiltCard>
+            </div>
           </div>
         ))}
       </div>

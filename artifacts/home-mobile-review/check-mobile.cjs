@@ -136,20 +136,6 @@ async function main() {
       console.log(JSON.stringify({width,heroHeight:result.heroHeight,primaryActionBottom:Math.round(result.primaryAction.bottom),contactMargins:Math.round(result.contact.left)}))
     }
     await call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true })
-    await evaluate(`sessionStorage.removeItem('introSeen')`)
-    await call('Page.navigate', { url: process.env.REVIEW_URL || 'http://localhost:3101/' })
-    await evaluate(`new Promise(resolve => { const start=performance.now(); const timer=setInterval(() => { if(sessionStorage.getItem('introSeen')==='1' || performance.now()-start>5000) { clearInterval(timer); resolve(); } }, 10) })`)
-    const skipAvailable = await evaluate(`(() => { const button=[...document.querySelectorAll('button')].find(b=>b.textContent.includes('Skip intro')); button?.focus(); return !!button })()`)
-    check(skipAvailable, 'Short intro: Skip button missing')
-    if (skipAvailable) {
-      await screenshot('mobile-first-intro-390.png')
-      await call('Input.dispatchKeyEvent', { type:'keyDown', key:'Enter', code:'Enter', windowsVirtualKeyCode:13, text:'\r', unmodifiedText:'\r' })
-      await call('Input.dispatchKeyEvent', { type:'keyUp', key:'Enter', code:'Enter', windowsVirtualKeyCode:13 })
-      await pause(100)
-      check(!await evaluate(`!!document.querySelector('[aria-label="Introduction"]')`), 'Short intro: keyboard Skip did not dismiss it')
-      await pause(1100)
-      check(!await evaluate(`!!document.querySelector('[aria-label="Introduction"]')`), 'Short intro: reappeared after Skip')
-    }
     await call('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] })
     await evaluate(`sessionStorage.removeItem('introSeen')`)
     await load()

@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useId, useState } from "react"
 import { LogoImage } from "@/components/logo-image"
 
 export type WorkCategory = "AI & Backend" | "Full-stack"
@@ -179,13 +180,17 @@ export const work: WorkItem[] = [
  * (full grid). `showStack` adds the tech tags, used only on the portfolio page
  * where the cards carry more depth.
  */
-export function WorkCard({ item, showStack = false, compact = false }: { item: WorkItem; showStack?: boolean; compact?: boolean }) {
+export function WorkCard({ item, showStack = false, compact = false, expandable = false }: { item: WorkItem; showStack?: boolean; compact?: boolean; expandable?: boolean }) {
+  const [expanded, setExpanded] = useState(false)
+  const descriptionId = useId()
+  const firstSentence = item.desc.split(". ")[0]
+  const preview = item.summary ?? (firstSentence.endsWith(".") ? firstSentence : `${firstSentence}.`)
   const cardClass =
     "group relative flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow duration-150 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
 
   const body = (
     <>
-      {!compact && item.caseStudyUrl && (
+      {!compact && !expandable && item.caseStudyUrl && (
         <ArrowUpRight className="absolute right-6 top-6 h-4 w-4 text-slate-300 transition-colors group-hover:text-primary" />
       )}
       {/* client / product */}
@@ -211,12 +216,17 @@ export function WorkCard({ item, showStack = false, compact = false }: { item: W
         )}
       </div>
       <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-      {compact && item.context && <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.context}</p>}
-      {compact && item.outcome && <p className="mt-3 text-xl font-bold leading-snug text-primary">{item.outcome}</p>}
-      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+      {(compact || expandable) && item.context && <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.context}</p>}
+      {(compact || expandable) && item.outcome && <p className="mt-3 text-xl font-bold leading-snug text-primary">{item.outcome}</p>}
+      <p id={descriptionId} className="mt-3 text-sm leading-relaxed text-slate-600">
         {compact && <span className="font-semibold text-slate-900">My contribution: </span>}
-        {compact ? item.summary ?? item.desc : item.desc}
+        {compact ? item.summary ?? item.desc : expandable && !expanded ? preview : item.desc}
       </p>
+      {expandable && (
+        <button type="button" aria-expanded={expanded} aria-controls={descriptionId} onClick={() => setExpanded(!expanded)} className="mt-2 inline-flex min-h-11 items-center self-start rounded-md text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          {expanded ? "Show less" : "Project details & technologies"}
+        </button>
+      )}
       {item.featured && item.featured.length > 0 && (
         <p className="mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-slate-500">
           <span className="font-semibold uppercase tracking-widest text-slate-400">As featured in</span>
@@ -224,7 +234,7 @@ export function WorkCard({ item, showStack = false, compact = false }: { item: W
         </p>
       )}
       <div className="flex-1" />
-      {showStack && (
+      {showStack && (!expandable || expanded) && (
         <div className="mt-5 flex flex-wrap gap-2">
           {item.stack.map((t) => (
             <span
@@ -238,7 +248,10 @@ export function WorkCard({ item, showStack = false, compact = false }: { item: W
       )}
       <p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{item.role}</p>
       {item.caseStudyUrl && (
-        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary underline-offset-4 group-hover:underline">
+        expandable ? <a href={item.caseStudyUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center self-start rounded-md text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          {item.linkLabel ?? "View project"}<ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a> : <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary underline-offset-4 group-hover:underline">
           {item.linkLabel ?? "View project"}<ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           <span className="sr-only"> (opens in a new tab)</span>
         </span>
@@ -261,7 +274,9 @@ export function WorkCard({ item, showStack = false, compact = false }: { item: W
     </>
   )
 
-  return item.caseStudyUrl ? (
+  return expandable ? (
+    <article className={cardClass}>{body}</article>
+  ) : item.caseStudyUrl ? (
     <a href={item.caseStudyUrl} target="_blank" rel="noopener noreferrer" className={cardClass}>
       {body}
     </a>
